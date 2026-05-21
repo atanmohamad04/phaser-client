@@ -4,7 +4,7 @@ export default class LoadingScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("loadingText", "client/assets/ui/load_bar/text.png");
+        this.load.image("loadingText", "assets/ui/load_bar/text.png");
     }
 
     create() {
