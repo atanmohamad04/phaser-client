@@ -374,6 +374,39 @@ export default class mainMenuScene extends Phaser.Scene {
             skills: selected.skills,
             isBotMatch: this.isBotMatch
           });
+
+          if (!this.isBotMatch) {
+            this.gameStartBtn.setVisible(false);
+            this.nextButton.setVisible(false);
+            this.prevButton.setVisible(false);
+
+            this.waitingText = this.add.text(
+              this.scale.width / 2,
+              this.scale.height / 2 + 240,
+              "Menunggu lawan...",
+              {
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: "28px",
+                fontStyle: "bold",
+                color: "#ffffff"
+              }
+            )
+            .setOrigin(0.5)
+            .setDepth(102)
+            .setScrollFactor(0);
+
+            // Animasi titik: "Menunggu lawan." -> ".." -> "..."
+            let dotCount = 0;
+            this._waitingDotTimer = this.time.addEvent({
+              delay: 500,
+              loop: true,
+              callback: () => {
+                dotCount = (dotCount + 1) % 4;
+                const dots = '.'.repeat(dotCount);
+                this.waitingText.setText(`Menunggu lawan${dots}`);
+              }
+            });
+          }
         });
 
         this.classText = this.add.text(
@@ -489,6 +522,16 @@ export default class mainMenuScene extends Phaser.Scene {
     }
 
     closePopup() {
+        // Bersihkan waiting text dan timer jika ada
+        if (this._waitingDotTimer) {
+            this._waitingDotTimer.remove(false);
+            this._waitingDotTimer = null;
+        }
+        if (this.waitingText) {
+            this.waitingText.destroy();
+            this.waitingText = null;
+        }
+
         this.popupOverlay.setVisible(false);
         this.popupBox.setVisible(false);
         // this.popupCloseBtn.setVisible(false);

@@ -536,27 +536,101 @@ export default class gameScene extends Phaser.Scene {
         
           const player = resolveCharacter(this.playerData);
           const enemy = resolveCharacter(this.enemyData);
-        
-          this.tweens.add({
-              targets: this.gameMusic,
-              volume: 0,
-              duration: 1000,
-              ease: "Linear",
-              onComplete: () => {
-                  this.gameMusic.stop();
-              
-                  this.scene.start('finalTestScene', {
-                      player,
-                      enemy,
-                      isMultiplayer: this.isMultiplayer,
-                      myId: this.myId,
-                      myRole: this.myRole,
-                      mySpawn: this.mySpawn,
-                      enemySpawn: this.enemySpawn,
-                      socket: window.socket
-                  });
+
+          // Multiplayer: kirim skill ke server, tampilkan teks menunggu lawan
+          if (this.isMultiplayer) {
+            window.socket.emit("selectCharacter", {
+              class: this.playerData.class,
+              subclass: this.playerData.subclass,
+              skills: this.selectedSkills,
+              isBotMatch: false
+            });
+
+            okBtn.disableInteractive();
+            okBtn.setAlpha(0.5);
+
+            this._waitingText = this.add.text(
+              okBtn.x,
+              okBtn.y - 50,
+              "Menunggu lawan...",
+              {
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: "22px",
+                fontStyle: "bold",
+                color: "#ffffff",
+                stroke: "#000000",
+                strokeThickness: 3
               }
-          });
+            )
+            .setOrigin(0.5)
+            .setDepth(10010)
+            .setScrollFactor(0);
+
+            let dotCount = 0;
+            this._waitingDotTimer = this.time.addEvent({
+              delay: 500,
+              loop: true,
+              callback: () => {
+                dotCount = (dotCount + 1) % 4;
+                const dots = '.'.repeat(dotCount);
+                this._waitingText.setText(`Menunggu lawan${dots}`);
+              }
+            });
+
+            // Lanjutkan pindah scene saat server bilang startGame
+            window.socket.once("startGame", () => {
+              if (this._waitingDotTimer) {
+                this._waitingDotTimer.remove(false);
+                this._waitingDotTimer = null;
+              }
+              if (this._waitingText) {
+                this._waitingText.destroy();
+                this._waitingText = null;
+              }
+
+              this.tweens.add({
+                targets: this.gameMusic,
+                volume: 0,
+                duration: 1000,
+                ease: "Linear",
+                onComplete: () => {
+                  this.gameMusic.stop();
+                  this.scene.start('finalTestScene', {
+                    player,
+                    enemy,
+                    isMultiplayer: this.isMultiplayer,
+                    myId: this.myId,
+                    myRole: this.myRole,
+                    mySpawn: this.mySpawn,
+                    enemySpawn: this.enemySpawn,
+                    socket: window.socket
+                  });
+                }
+              });
+            });
+
+          } else {
+            this.tweens.add({
+                targets: this.gameMusic,
+                volume: 0,
+                duration: 1000,
+                ease: "Linear",
+                onComplete: () => {
+                    this.gameMusic.stop();
+                
+                    this.scene.start('finalTestScene', {
+                        player,
+                        enemy,
+                        isMultiplayer: this.isMultiplayer,
+                        myId: this.myId,
+                        myRole: this.myRole,
+                        mySpawn: this.mySpawn,
+                        enemySpawn: this.enemySpawn,
+                        socket: window.socket
+                    });
+                }
+            });
+          }
         
       });
       
