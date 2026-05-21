@@ -145,5 +145,12 @@ export default class MaterialSystem {
     scene.btnNext.setVisible(false);
     scene.feedbackIcon.setVisible(false);
     scene.feedbackCloud.setVisible(false);
+
+    if (scene.isMultiplayer) {
+      window.socket.emit("syncStatue", {
+        objName: obj.name,
+        group: obj.group
+      });
+    }
   }
 }

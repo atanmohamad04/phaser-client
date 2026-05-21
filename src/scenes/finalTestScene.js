@@ -12,6 +12,7 @@ export default class finalTestScene extends Phaser.Scene {
     }
 
     init(data) {
+        this.game.events.emit("scene-loading-start");
         this.playerData  = data.player;
         this.enemyData   = data.enemy;
         this.myId        = data.myId;
@@ -19,9 +20,6 @@ export default class finalTestScene extends Phaser.Scene {
         this.mySpawn     = data.mySpawn;
         this.enemySpawn  = data.enemySpawn;
         this.isMultiplayer = data.isMultiplayer;
-
-        // Socket diteruskan dari scene sebelumnya lewat data
-        // Pastikan scene lobby/matchmaking menyertakan socket di sini
         this.socket = data.socket || null;
     }
 
@@ -94,6 +92,7 @@ export default class finalTestScene extends Phaser.Scene {
     }
 
     create() {
+        this.game.events.emit("scene-loading-done");
         this.isMultiplayer = this.isMultiplayer || false;
         this.hasAnswered   = false;
 

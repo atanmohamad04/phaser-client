@@ -116,6 +116,10 @@ export default class mainMenuScene extends Phaser.Scene {
       ];
     }
 
+    init() {
+      this.game.events.emit("scene-loading-start");
+    }
+
     preload() {
         this.load.image("bgMenu", "assets/ui/menu/bg-menu.jpg");
         this.load.image("btnPlay", "assets/ui/menu/play.png");
@@ -147,6 +151,7 @@ export default class mainMenuScene extends Phaser.Scene {
     }
 
     create() {
+        this.game.events.emit("scene-loading-done");
         this.isBotMatch = null;
         this.gameHasStarted = false;
 

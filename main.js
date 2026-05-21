@@ -1,6 +1,7 @@
 import mainMenuScene from "./src/scenes/mainMenuScene.js";
 import gameScene from "./src/scenes/gameScene.js";
 import finalTestScene from './src/scenes/finalTestScene.js';
+import LoadingScene from "./src/scenes/loadingScene.js";
 
 const SERVER_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
   ? "http://192.168.18.14:3000"
@@ -27,7 +28,11 @@ const config = {
     }
   },
 
-  scene: [mainMenuScene, gameScene, finalTestScene]
+  scene: [mainMenuScene, gameScene, finalTestScene, LoadingScene]
 };
 
-new Phaser.Game(config);
+const game = new Phaser.Game(config);
+
+game.events.on('ready', () => {
+    game.scene.start('LoadingScene');
+});

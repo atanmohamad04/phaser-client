@@ -31,6 +31,7 @@ export default class gameScene extends Phaser.Scene {
   }
 
   init(data) {
+    this.game.events.emit("scene-loading-start");
     this.playerData = data.player;
     this.enemyData = data.enemy;
     this.myId = data.myId;
@@ -127,6 +128,7 @@ export default class gameScene extends Phaser.Scene {
   }
 
   create() {
+    this.game.events.emit("scene-loading-done");
     this.gameMusic = this.sound.add("bgmGame", {
         loop: true,
         volume: 0
@@ -203,6 +205,33 @@ export default class gameScene extends Phaser.Scene {
         this.enemy.anims.play(data.anim, true);
       }
     });
+
+    if (this.isMultiplayer) {
+      window.socket.on("syncStatue", (data) => {
+          const obj = this.interactables.find(o => o.name === data.objName);
+          if (!obj || obj.activated) return;
+
+          obj.activated = true;
+          this.groupProgress[data.group]++;
+
+          const worldX = obj.x + obj.width / 2;
+          const worldY = obj.y + obj.height / 2;
+          const tile = this.interactBottom.getTileAtWorldXY(worldX, worldY);
+          if (tile) {
+              this.obstacleTop.putTileAt(1209, tile.x, tile.y - 1);
+              this.obstacleBottom.putTileAt(1225, tile.x, tile.y);
+          }
+      });
+
+      window.socket.on("syncDoor", (data) => {
+          const obj = this.interactables.find(o => o.name === data.objName);
+          if (!obj || obj.activated) return;
+      
+          this.interactionSystem.openDoorTiles(obj);
+          this.currentFloor += 1;
+          this.showFloorTitle();
+      });
+    }
 
     this.materialSystem = new MaterialSystem(this);
     this.interactionSystem = new InteractionSystem(this, this.playerData, this.enemyData);

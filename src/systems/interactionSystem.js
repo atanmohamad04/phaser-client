@@ -141,6 +141,12 @@ export default class InteractionSystem {
       scene.currentFloor += 1;
       scene.showFloorTitle();
     }
+
+    if (scene.isMultiplayer) {
+      window.socket.emit("syncDoor", {
+        objName: obj.name
+      });
+    }
   }
 
   openDoorTiles(obj) {
