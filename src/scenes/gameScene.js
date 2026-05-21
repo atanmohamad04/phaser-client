@@ -528,36 +528,104 @@ export default class gameScene extends Phaser.Scene {
           if (this.selectedSkills.length === 0) {
             return;
           }
-        
+
           if (this.isTransitioning) return;
           this.isTransitioning = true;
-        
+
           this.playerData.skills = this.selectedSkills;
-        
+
           const player = resolveCharacter(this.playerData);
           const enemy = resolveCharacter(this.enemyData);
-        
-          this.tweens.add({
+
+          const startTransition = () => {
+            this.tweens.add({
               targets: this.gameMusic,
               volume: 0,
               duration: 1000,
               ease: "Linear",
               onComplete: () => {
-                  this.gameMusic.stop();
-              
-                  this.scene.start('finalTestScene', {
-                      player,
-                      enemy,
-                      isMultiplayer: this.isMultiplayer,
-                      myId: this.myId,
-                      myRole: this.myRole,
-                      mySpawn: this.mySpawn,
-                      enemySpawn: this.enemySpawn,
-                      socket: window.socket
-                  });
+                this.gameMusic.stop();
+
+                this.scene.start('finalTestScene', {
+                  player,
+                  enemy,
+                  isMultiplayer: this.isMultiplayer,
+                  myId: this.myId,
+                  myRole: this.myRole,
+                  mySpawn: this.mySpawn,
+                  enemySpawn: this.enemySpawn,
+                  socket: window.socket
+                });
               }
+            });
+          };
+
+          if (!this.isMultiplayer) {
+            startTransition();
+            return;
+          }
+
+          // --- MULTIPLAYER: emit ready dan tunggu lawan ---
+          window.socket.emit("playerReady", { myId: this.myId });
+
+          // Overlay gelap untuk memblock input
+          this._waitingOverlay = this.add.rectangle(
+            0, 0,
+            this.scale.width, this.scale.height,
+            0x000000, 0.55
+          )
+          .setOrigin(0)
+          .setDepth(20000)
+          .setScrollFactor(0)
+          .setInteractive(); // blok semua klik di bawahnya
+
+          // Teks menunggu
+          this.waitingText = this.add.text(
+            this.scale.width / 2,
+            this.scale.height / 2 + 250,
+            "Menunggu lawan",
+            {
+              fontFamily: 'Poppins, sans-serif',
+              fontSize: "28px",
+              fontStyle: "bold",
+              color: "#ffffff"
+            }
+          )
+          .setOrigin(0.5)
+          .setDepth(20001)
+          .setScrollFactor(0);
+
+          let dotCount = 0;
+          this._waitingDotTimer = this.time.addEvent({
+            delay: 500,
+            loop: true,
+            callback: () => {
+              dotCount = (dotCount + 1) % 4;
+              const dots = '.'.repeat(dotCount);
+              this.waitingText.setText(`Menunggu lawan${dots}`);
+            }
           });
-        
+
+          // Sembunyikan tombol ok saat menunggu
+          okBtn.setVisible(false);
+
+          // Tunggu konfirmasi kedua player sudah siap
+          window.socket.once("bothReady", () => {
+            if (this._waitingDotTimer) {
+              this._waitingDotTimer.remove(false);
+              this._waitingDotTimer = null;
+            }
+            if (this.waitingText) {
+              this.waitingText.destroy();
+              this.waitingText = null;
+            }
+            if (this._waitingOverlay) {
+              this._waitingOverlay.destroy();
+              this._waitingOverlay = null;
+            }
+
+            startTransition();
+          });
       });
       
       skills.forEach((skill, index) => {

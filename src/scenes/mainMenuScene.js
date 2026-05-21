@@ -380,9 +380,19 @@ export default class mainMenuScene extends Phaser.Scene {
             this.nextButton.setVisible(false);
             this.prevButton.setVisible(false);
 
+            this.waitingOverlay = this.add.rectangle(
+              0, 0,
+              this.scale.width, this.scale.height,
+              0x000000, 0.55
+            )
+            .setOrigin(0)
+            .setDepth(20000)
+            .setScrollFactor(0)
+            .setInteractive(); // blok semua klik di bawahnya
+
             this.waitingText = this.add.text(
               this.scale.width / 2,
-              this.scale.height / 2 + 240,
+              this.scale.height / 2 + 250,
               "Menunggu lawan...",
               {
                 fontFamily: 'Poppins, sans-serif',
@@ -395,7 +405,6 @@ export default class mainMenuScene extends Phaser.Scene {
             .setDepth(102)
             .setScrollFactor(0);
 
-            // Animasi titik: "Menunggu lawan." -> ".." -> "..."
             let dotCount = 0;
             this._waitingDotTimer = this.time.addEvent({
               delay: 500,
@@ -530,6 +539,10 @@ export default class mainMenuScene extends Phaser.Scene {
         if (this.waitingText) {
             this.waitingText.destroy();
             this.waitingText = null;
+        }
+        if (this.waitingOverlay) {
+            this.waitingOverlay.destroy();
+            this.waitingOverlay = null;
         }
 
         this.popupOverlay.setVisible(false);
