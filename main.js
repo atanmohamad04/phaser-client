@@ -4,7 +4,7 @@ import finalTestScene from './src/scenes/finalTestScene.js';
 
 const SERVER_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
   ? "http://192.168.18.14:3000"
-  : "https://game-client-rho.vercel.app/";
+  : "https://phaser-server-production.up.railway.app/";
 
 window.socket = io(SERVER_URL);
 
