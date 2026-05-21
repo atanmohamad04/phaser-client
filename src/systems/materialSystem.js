@@ -9,11 +9,16 @@ export default class MaterialSystem {
   constructor(scene) {
     this.scene = scene;
     this.materialInteraction = new MaterialInteractionSystem(scene);
-    this.materialInteraction.registerHandler("statue1", firstMonument);
-    this.materialInteraction.registerHandler("statue2", secondMonument);
-    this.materialInteraction.registerHandler("statue3", thirdMonument);
-    this.materialInteraction.registerHandler("statue4", fourthMonument);
-    this.materialInteraction.registerHandler("statue5", fifthMonument);
+    this.materialInteraction.registerHandler("statueLeft1", firstMonument);
+    this.materialInteraction.registerHandler("statueRight1", firstMonument);
+    this.materialInteraction.registerHandler("statueLeft2", secondMonument);
+    this.materialInteraction.registerHandler("statueRight2", secondMonument);
+    this.materialInteraction.registerHandler("statueLeft3", thirdMonument);
+    this.materialInteraction.registerHandler("statueRight3", thirdMonument);
+    this.materialInteraction.registerHandler("statueLeft4", fourthMonument);
+    this.materialInteraction.registerHandler("statueRight4", fourthMonument);
+    this.materialInteraction.registerHandler("statueLeft5", fifthMonument);
+    this.materialInteraction.registerHandler("statueRight5", fifthMonument);
   }
 
   tryNextPage() {
@@ -25,7 +30,6 @@ export default class MaterialSystem {
     this.nextMaterialPage();
   }
 
-  
   updateMaterialMode() {
     const scene = this.scene;
 
