@@ -118,6 +118,7 @@ export default class InteractionSystem {
       scene.materialSystem.materialInteraction.setActiveHandler(obj.name);
       scene.isInMaterial = true;
       scene.activeStatue = obj;
+      console.log("Activating statue:", obj.name);
       scene.currentMaterial = scene.materials[obj.name] || ["Materi belum tersedia."];
       scene.currentPage = 0;
       scene.materialSystem.nextMaterialPage();

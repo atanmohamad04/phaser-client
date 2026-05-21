@@ -1019,6 +1019,8 @@ export default class gameScene extends Phaser.Scene {
         };
       });
 
+      console.log("Loaded interactables:", this.interactables);
+
       //MISSION STATE SETUP
       this.missionComplete = false;
       this.groupProgress   = {};
@@ -1093,6 +1095,7 @@ export default class gameScene extends Phaser.Scene {
       this.currentMaterial = [];
 
       this.materials = materialsData;
+      console.log("Loaded materials:", this.materials);
     }
 
     setupDebug() {

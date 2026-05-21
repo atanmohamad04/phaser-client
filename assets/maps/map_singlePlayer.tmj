@@ -691,7 +691,7 @@
                 {
                  "height":64,
                  "id":3,
-                 "name":"statue1",
+                 "name":"statueLeft1",
                  "properties":[
                         {
                          "name":"group",
@@ -708,7 +708,7 @@
                 {
                  "height":64,
                  "id":8,
-                 "name":"statue2",
+                 "name":"statueLeft2",
                  "properties":[
                         {
                          "name":"group",
@@ -725,7 +725,7 @@
                 {
                  "height":64,
                  "id":10,
-                 "name":"statue3",
+                 "name":"statueLeft3",
                  "properties":[
                         {
                          "name":"group",
@@ -742,7 +742,7 @@
                 {
                  "height":64,
                  "id":12,
-                 "name":"statue4",
+                 "name":"statueLeft4",
                  "properties":[
                         {
                          "name":"group",
@@ -759,7 +759,7 @@
                 {
                  "height":64,
                  "id":14,
-                 "name":"statue5",
+                 "name":"statueLeft5",
                  "properties":[
                         {
                          "name":"group",
