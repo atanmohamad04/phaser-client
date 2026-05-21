@@ -1,4 +1,4 @@
-import CharacterSystem from "../systems/CharacterSystem.js";
+import CharacterSystem from "../systems/characterSystem.js";
 import { loadCharSprites } from "../utils/loadCharSprites.js";
 import { createCharAnimations } from "../utils/createCharAnimations.js";
 import { getCharKey } from "../utils/getCharKey.js";

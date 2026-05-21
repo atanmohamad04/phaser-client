@@ -2,7 +2,7 @@ import MaterialSystem from "../systems/materialSystem.js";
 import InteractionSystem from "../systems/interactionSystem.js";
 import MovementSystem from "../systems/movementSystem.js";
 import materialsData from "../../data/material.js";
-import CharacterSystem from '../systems/CharacterSystem.js';
+import CharacterSystem from '../systems/characterSystem.js';
 import { loadCharSprites } from "../utils/loadCharSprites.js";
 import { createCharAnimations } from "../utils/createCharAnimations.js";
 import { getCharKey } from "../utils/getCharKey.js";
