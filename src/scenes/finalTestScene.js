@@ -1,7 +1,7 @@
 import FinalTestSystem from '../systems/finalTestSystem.js';
 import QuestionSystem from '../systems/questionSystem.js';
 import BattleSystem from '../systems/battleSystem.js';
-import CharacterSystem from '../systems/CharacterSystem.js';
+import CharacterSystem from '../systems/characterSystem.js';
 import { loadCharSprites } from "../utils/loadCharSprites.js";
 import { createCharAnimations } from "../utils/createCharAnimations.js";
 import { getCharKey } from "../utils/getCharKey.js";
