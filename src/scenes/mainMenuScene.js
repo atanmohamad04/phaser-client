@@ -386,7 +386,7 @@ export default class mainMenuScene extends Phaser.Scene {
               0x000000, 0.55
             )
             .setOrigin(0)
-            .setDepth(20000)
+            .setDepth(102)
             .setScrollFactor(0)
             .setInteractive(); // blok semua klik di bawahnya
 
@@ -402,7 +402,7 @@ export default class mainMenuScene extends Phaser.Scene {
               }
             )
             .setOrigin(0.5)
-            .setDepth(102)
+            .setDepth(103)
             .setScrollFactor(0);
 
             let dotCount = 0;
