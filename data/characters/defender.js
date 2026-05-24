@@ -99,7 +99,7 @@ const Defender = {
 
           effect: {
             type: "heal",
-            value: 0.05,
+            value: 0.015,
             target: "maxHp"
           }
         },

@@ -237,7 +237,8 @@ export default class BattleSystem {
         if (this.combo > this.maxCombo) {
             this.combo = this.maxCombo;
         }
-
+        if (this.enemyCharacter._deathDelay?.active) return;
+        
         const multiplier = this.getDamageMultiplier();
         const finalMultiplier = this.comboMultiplierBonus 
         ? multiplier * this.comboMultiplierBonus 

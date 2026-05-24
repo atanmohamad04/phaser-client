@@ -127,7 +127,7 @@ const Guard = {
             },
             {
               type: "hpDrain",
-              value: 0.01,
+              value: 0.015,
               interval: 1
             },
             {
