@@ -198,9 +198,22 @@ export default class BattleSystem {
         this.comboMultiplierBonus = 1;
         this.updateUI();
 
-        if (this.playerHP <= 0 || this.enemyHP <= 0) {
-            this.endBattle(true);
-            return;
+        if (this.playerHP <= 0) {
+            if (this.playerCharacter._deathDelayConfig && !this.playerCharacter._deathDelay) {
+                this.applyEffect({ type: "deathDelayStart" }, this.playerCharacter, null);
+            } else if (!this.playerCharacter._deathDelay?.active) {
+                this.endBattle(true);
+                return;
+            }
+        }
+    
+        if (this.enemyHP <= 0) {
+            if (this.enemyCharacter._deathDelayConfig && !this.enemyCharacter._deathDelay) {
+                this.applyEffect({ type: "deathDelayStart" }, this.enemyCharacter, null);
+            } else if (!this.enemyCharacter._deathDelay?.active) {
+                this.endBattle(true);
+                return;
+            }
         }
 
         if (this.questionSystem) {
@@ -282,7 +295,9 @@ export default class BattleSystem {
         
             this.showHealText(this.player, healAmount);
         } else {
-            if (!this.enemyCharacter._deathDelay?.active) {
+            if (this.enemyCharacter._deathDelay?.active) {
+                // Jika deathDelay aktif, jangan kurangi HP sekarang. Biarkan timer di deathDelayStart yang menyelesaikan battle.
+            } else {
                 this.enemyHP -= damage;
             }
         }
@@ -376,7 +391,9 @@ export default class BattleSystem {
         
             this.showHealText(this.enemy, healAmount);
         } else {
-            if (!this.playerCharacter._deathDelay?.active) {
+            if (this.playerCharacter._deathDelay?.active) {
+                // Jika deathDelay aktif, jangan kurangi HP sekarang. Biarkan timer di deathDelayStart yang menyelesaikan battle.
+            } else {
                 this.playerHP -= damage;
             }
         }
@@ -1559,27 +1576,39 @@ export default class BattleSystem {
                 timer: null
             };
         
-            dotData.timer = this.scene.time.addEvent({
+           dotData.timer = this.scene.time.addEvent({
                 delay: 1000,
                 repeat: duration - 1,
                 callback: () => {
                     let target;
                     if (defenderChar === this.enemyCharacter) {
+                        // Jangan apply damage jika deathDelay sedang aktif
                         if (!this.enemyCharacter._deathDelay?.active) {
                             this.enemyHP -= dotData.damage;
                         }
                         target = this.enemy;
-
+                    
                         if (this.enemyHP <= 0) {
+                            if (this.enemyCharacter._deathDelayConfig && !this.enemyCharacter._deathDelay) {
+                                // Trigger deathDelay dulu, bukan langsung endBattle
+                                this.applyEffect({ type: "deathDelayStart" }, this.enemyCharacter, null);
+                            } else if (!this.enemyCharacter._deathDelay?.active) {
                                 this.endBattle(true);
+                            }
                         }
                     } else {
                         if (!this.playerCharacter._deathDelay?.active) {
                             this.playerHP -= dotData.damage;
                         }
                         target = this.player;
+                    
                         if (this.playerHP <= 0) {
+                            if (this.playerCharacter._deathDelayConfig && !this.playerCharacter._deathDelay) {
+                                // Trigger deathDelay dulu, bukan langsung endBattle
+                                this.applyEffect({ type: "deathDelayStart" }, this.playerCharacter, null);
+                            } else if (!this.playerCharacter._deathDelay?.active) {
                                 this.endBattle(true);
+                            }
                         }
                     }
                 
