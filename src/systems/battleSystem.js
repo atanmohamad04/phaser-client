@@ -1674,7 +1674,7 @@ export default class BattleSystem {
             .setDepth(5000)
             .setScrollFactor(0);
 
-        const scoreText = this.scene.add.text(centerX, centerY - 10, `${this.score}`, {
+        const scoreText = this.scene.add.text(centerX, centerY - 10, `${Math.floor(this.score)}`, {
             fontSize: '48px',
             color: '#101010',
             fontStyle: 'bold'
@@ -1704,9 +1704,14 @@ export default class BattleSystem {
         
         this.isBattleOver = true;
         const scene = this.scene;
-        
+
+        if (scene.isMultiplayer && scene.socket) {
+            if (isWin) {
+                scene.socket.emit("battleOver", { winnerId: scene.socket.id });
+            }
+        }
+
         const highScore = localStorage.getItem('highScore') || 0;
-        
         if (this.score > highScore) {
             localStorage.setItem('highScore', this.score);
         }

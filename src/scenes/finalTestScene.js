@@ -176,6 +176,42 @@ export default class finalTestScene extends Phaser.Scene {
 
             this.questionSystem.questionContainer.setVisible(false);
             this.battleSystem.setTimerVisible(false);
+
+            this.waitingOverlay = this.add.rectangle(
+              0, 0,
+              this.scale.width, this.scale.height,
+              0x000000, 0.55
+            )
+            .setOrigin(0)
+            .setDepth(6002)
+            .setScrollFactor(0)
+            .setInteractive();
+
+            this.waitingText = this.add.text(
+              this.scale.width / 2,
+              this.scale.height / 2 + 250,
+              "Menunggu lawan...",
+              {
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: "28px",
+                fontStyle: "bold",
+                color: "#ffffff"
+              }
+            )
+            .setOrigin(0.5)
+            .setDepth(6003)
+            .setScrollFactor(0);
+
+            let dotCount = 0;
+            this._waitingDotTimer = this.time.addEvent({
+              delay: 500,
+              loop: true,
+              callback: () => {
+                dotCount = (dotCount + 1) % 4;
+                const dots = '.'.repeat(dotCount);
+                this.waitingText.setText(`Menunggu lawan${dots}`);
+              }
+            });
         }
 
         // Daftarkan socket listener HANYA jika multiplayer
@@ -208,6 +244,19 @@ export default class finalTestScene extends Phaser.Scene {
         socket.on("battleStart", () => {
             this.questionSystem.questionContainer.setVisible(true);
             this.battleSystem.setTimerVisible(true);
+
+            if (this._waitingDotTimer) {
+            this._waitingDotTimer.remove(false);
+            this._waitingDotTimer = null;
+            }
+            if (this.waitingText) {
+                this.waitingText.destroy();
+                this.waitingText = null;
+            }
+            if (this.waitingOverlay) {
+                this.waitingOverlay.destroy();
+                this.waitingOverlay = null;
+            }
         });
 
         // ── battleResult ─────────────────────────────────────────────
@@ -279,6 +328,10 @@ export default class finalTestScene extends Phaser.Scene {
         
         this.socket.on("deathDelayEnd", ({ character }) => {
             this.battleSystem.endBattle(character === "player" ? false : true);
+        });
+
+        socket.on("opponentWon", () => {
+            this.battleSystem.endBattle(false);
         });
 
         // ── opponentDisconnected ──────────────────────────────────────

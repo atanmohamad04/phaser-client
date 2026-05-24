@@ -6,9 +6,9 @@ const Defender = {
       subclass: "Protector",
 
       baseStats: {
-        attack: 190,
-        hp: 3019,
-        defense: 147
+        attack: 148,
+        hp: 1350,
+        defense: 88
       },
 
       skills: [
@@ -21,7 +21,7 @@ const Defender = {
             {
               type: "buff",
               targetStat: "defense",
-              value: 0.3
+              value: 0.15
             },
             {
               type: "reflect",
@@ -39,7 +39,7 @@ const Defender = {
           effect: {
             type: "scalingBuff",
             targetStat: "defense",
-            maxBonus: 0.25,
+            maxBonus: 0.1,
             condition: {
               hpThreshold: 0.4,
               direction: "decreasing"
@@ -56,13 +56,13 @@ const Defender = {
             {
               type: "buff",
               targetStat: "hp",
-              value: 0.2,
+              value: 0.15,
               duration: 16
             },
             {
               type: "buff",
               targetStat: "defense",
-              value: 0.15,
+              value: 0.05,
               duration: 16,
             },
             {
@@ -82,9 +82,9 @@ const Defender = {
       subclass: "Guardian",
 
       baseStats: {
-        attack: 196,
-        hp: 3191,
-        defense: 135
+        attack: 153,
+        hp: 1420,
+        defense: 80
       },
 
       skills: [
@@ -99,7 +99,7 @@ const Defender = {
 
           effect: {
             type: "heal",
-            value: 0.02,
+            value: 0.05,
             target: "maxHp"
           }
         },
@@ -110,7 +110,7 @@ const Defender = {
           trigger: "onGameStart",
         
           condition: {
-            interval: 20,
+            interval: 15,
             maxStack: 3
           },
         
@@ -123,13 +123,13 @@ const Defender = {
             {
               type: "buff",
               targetStat: "hp",
-              value: 0.04,
+              value: 0.01,
               stackable: true
             },
             {
               type: "buff",
               targetStat: "defense",
-              value: 0.025,
+              value: 0.005,
               stackable: true
             }
           ]
@@ -144,17 +144,17 @@ const Defender = {
             {
               type: "buff",
               targetStat: "attack",
-              value: 0.2,
+              value: 0.15,
               duration: 20
             },
             {
               type: "replaceAttackWithHeal",
-              ratio: 0.9,
+              ratio: 0.3,
               duration: 20,
             },
             {
               type: "damageReduction",
-              value: 0.15,
+              value: 0.1,
               duration: 20,
               tag: "sanctuary"
             }

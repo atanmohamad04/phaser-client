@@ -6,9 +6,9 @@ const Specialist = {
       subclass: "Alchemist",
 
       baseStats: {
-        attack: 179,
-        hp: 2546,
-        defense: 112
+        attack: 140,
+        hp: 1150,
+        defense: 87
       },
 
       skills: [
@@ -32,7 +32,7 @@ const Specialist = {
           effect: {
             type: "dot",
             targetStat: "attack",
-            value: 0.2,
+            value: 0.1,
             duration: 3
           }
         },

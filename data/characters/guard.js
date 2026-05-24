@@ -6,9 +6,9 @@ const Guard = {
       subclass: "Swordmaster",
 
       baseStats: {
-        attack: 223,
-        hp: 1982,
-        defense: 98
+        attack: 172,
+        hp: 980,
+        defense: 76
       },
 
       skills: [
@@ -17,12 +17,12 @@ const Guard = {
           type: "passive",
           trigger: "onAttack",
 
-          chance: 0.4,
+          chance: 0.25,
 
           effect: {
             type: "debuff",
             targetStat: "defense",
-            value: 0.10,
+            value: 0.1,
             duration: 6,
             stackable: true,
             maxStack: 2
@@ -37,7 +37,7 @@ const Guard = {
           effect: {
             type: "modifier",
             target: "comboMultiplier",
-            value: 1.2
+            value: 1.1
           }
         },
 
@@ -49,8 +49,8 @@ const Guard = {
           effect: {
             type: "nextAttackModifier",
           
-            multiplier: 2,
-            missingHpScaling: 0.3,
+            multiplier: 1.5,
+            missingHpScaling: 0.2,
           
             consumeOnUse: true
           }
@@ -62,9 +62,9 @@ const Guard = {
       subclass: "Primal Guard",
 
       baseStats: {
-        attack: 214,
-        hp: 2049,
-        defense: 107
+        attack: 165,
+        hp: 1020,
+        defense: 83
       },
 
       skills: [
@@ -73,7 +73,7 @@ const Guard = {
           type: "passive",
           trigger: "onAttack",
 
-          chance: 0.38,
+          chance: 0.22,
 
           effect: {
             type: "statSwapDebuff",
@@ -90,7 +90,7 @@ const Guard = {
           type: "passive",
           trigger: "onIncomingAttack",
 
-          chance: 0.15,
+          chance: 0.1,
 
           effect: {
             type: "dodge"
@@ -108,12 +108,12 @@ const Guard = {
             {
               type: "buff",
               targetStat: "hp",
-              value: 0.3
+              value: 0.15
             },
             {
               type: "buff",
               targetStat: "attack",
-              value: 0.25
+              value: 0.1
             },
             {
               type: "stateChange",
@@ -127,7 +127,7 @@ const Guard = {
             },
             {
               type: "hpDrain",
-              value: 0.04,
+              value: 0.03,
               interval: 1
             },
             {

@@ -388,7 +388,7 @@ export default class mainMenuScene extends Phaser.Scene {
             .setOrigin(0)
             .setDepth(102)
             .setScrollFactor(0)
-            .setInteractive(); // blok semua klik di bawahnya
+            .setInteractive();
 
             this.waitingText = this.add.text(
               this.scale.width / 2,
