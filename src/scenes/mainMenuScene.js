@@ -15,17 +15,17 @@ export default class mainMenuScene extends Phaser.Scene {
             {
               name:"Fractured Edge",
               type:"passive",
-              description:"Serangan memiliki 40% peluang untuk mengurangi DEF target sebesar 10% selama 6 detik. Dapat ditumpuk hingga 2 kali (Durasi direset saat dipicu ulang)."
+              description:"Serangan memiliki 25% peluang untuk mengurangi DEF target sebesar 10% selama 6 detik. Dapat ditumpuk hingga 2 kali (Durasi direset saat dipicu ulang)."
             },
             {
               name:"Flow of Blades",
               type:"passive",
-              description:"Saat memicu combo, Combo Multiplier meningkat menjadi 150%."
+              description:"Saat memicu combo, Combo Multiplier meningkat menjadi 110%."
             },
             {
               name:"Final Severance",
               type:"ultimate",
-              description:"Serangan berikutnya memberikan 260% ATK sebagai damage. Memberikan tambahan damage sebesar 35% dari HP target yang telah hilang. Efek dikonsumsi setelah digunakan."
+              description:"Serangan berikutnya memberikan 150% ATK sebagai damage. Memberikan tambahan damage sebesar 20% dari HP target yang telah hilang. Efek dikonsumsi setelah digunakan."
             }
           ]
         },
@@ -36,17 +36,17 @@ export default class mainMenuScene extends Phaser.Scene {
             {
               name:"Hunter’s Dominance",
               type:"passive",
-              description:"Serangan memiliki 38% peluang untuk meningkatkan ATK diri sebesar 12% dan mengurangi ATK musuh sebesar 15% selama 4 detik (Durasi direset saat dipicu ulang)."
+              description:"Serangan memiliki 22% peluang untuk meningkatkan ATK diri sebesar 12% dan mengurangi ATK musuh sebesar 15% selama 4 detik (Durasi direset saat dipicu ulang)."
             },
             {
               name:"Wild Evasion",
               type:"passive",
-              description:"Memiliki 25% peluang untuk menghindari serangan yang masuk."
+              description:"Memiliki 10% peluang untuk menghindari serangan yang masuk."
             },
             {
               name:"Blood Hound Ascension",
               type:"ultimate",
-              description:"Max HP +30%, ATK +25%. Serangan berubah menjadi True Damage. HP tidak dapat turun di bawah 1. Kehilangan 4% HP setiap detik (meningkat menjadi 8% per detik setelah 12 detik). Jika HP mencapai 1, unit akan mundur dari pertempuran setelah 15 detik. Durasi tidak terbatas."
+              description:"Max HP +5%, ATK +10%. Serangan berubah menjadi True Damage. HP tidak dapat turun di bawah 1. Kehilangan 1.5% HP setiap detik (meningkat menjadi 3% per detik setelah 12 detik). Jika HP mencapai 1, unit akan mundur dari pertempuran setelah 15 detik. Durasi tidak terbatas."
             }
           ]
         },
@@ -57,17 +57,17 @@ export default class mainMenuScene extends Phaser.Scene {
             {
               name:"Thorned Bulwark",
               type:"passive",
-              description:"DEF +30%. Memantulkan damage sebesar 50% ATK kepada penyerang."
+              description:"DEF +15%. Memantulkan damage sebesar 10% ATK kepada penyerang."
             },
             {
               name:"Last Bastion",
               type:"passive",
-              description:"DEF meningkat seiring berkurangnya HP, hingga +25% Bonus maksimum tercapai saat HP di bawah 40%."
+              description:"DEF meningkat seiring berkurangnya HP, hingga +10% Bonus maksimum tercapai saat HP di bawah 40%."
             },
             {
               name:"Fortress of Purity",
               type:"ultimate",
-              description:"Max HP +20%, DEF +15%. Menghapus semua debuff aktif dan kebal terhadap debuff. Durasi: 16 detik."
+              description:"Max HP +5%, DEF +15%. Menghapus semua debuff aktif dan kebal terhadap debuff. Durasi: 16 detik."
             }
           ]
         },
@@ -78,17 +78,17 @@ export default class mainMenuScene extends Phaser.Scene {
             {
               name:"Recovery Protocol",
               type:"passive",
-              description:"Jika tidak menerima damage selama 9 detik, memulihkan 2% Max HP per detik."
+              description:"Jika tidak menerima damage selama 10 detik, memulihkan 1% Max HP per detik."
             },
             {
               name:"Penumbral Image",
               type:"passive",
-              description:"Durasi Stagger -1.4 detik. Setiap 20 detik sejak pertempuran dimulai: Max HP +4%, DEF +2.5% (maks. 3 stack)."
+              description:"Durasi Stagger -1.4 detik. Setiap 20 detik sejak pertempuran dimulai: Max HP +1%, DEF +0.5% (maks. 3 stack)."
             },
             {
               name:"Myriad Grains",
               type:"ultimate",
-              description:"ATK +20%. Berhenti menyerang musuh; serangan akan memulihkan HP sebesar 90% ATK. Mendapatkan 15% Sanctuary (mengurangi damage yang diterima). Durasi: 20 detik."
+              description:"ATK +15%. Berhenti menyerang musuh; serangan akan memulihkan HP sebesar 30% ATK. Mendapatkan 10% Sanctuary (mengurangi damage yang diterima). Durasi: 20 detik."
             }
           ]
         },
@@ -99,17 +99,17 @@ export default class mainMenuScene extends Phaser.Scene {
             {
               name:"Catalytic Disruption",
               type:"passive",
-              description:"Durasi Stagger musuh +1.5 detik."
+              description:"Durasi Stagger musuh +1.4 detik."
             },
             {
               name:"Corrosive Infusion",
               type:"passive",
-              description:"Serangan memberikan efek Poison. Poison memberikan damage sebesar 25% ATK per detik selama 3 detik (Durasi direset saat dipicu ulang)."
+              description:"Serangan memberikan efek Poison. Poison memberikan damage sebesar 10% ATK per detik selama 3 detik (Durasi direset saat dipicu ulang)."
             },
             {
               name:"Murky Night",
               type:"ultimate",
-              description:"Menghapus efek Stagger pada diri sendiri. Memberikan efek Silence pada musuh (menonaktifkan skill; memprioritaskan Ultimate yang belum aktif) dan efek poison meningkat menjadi 150%. Durasi 20 detik."
+              description:"Menghapus efek Stagger pada diri sendiri. Memberikan efek Silence pada musuh (menonaktifkan skill; memprioritaskan Ultimate yang belum aktif) dan efek poison meningkat menjadi 30%. Durasi 20 detik."
             }
           ]
         }

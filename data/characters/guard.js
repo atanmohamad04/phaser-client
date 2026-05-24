@@ -6,9 +6,9 @@ const Guard = {
       subclass: "Swordmaster",
 
       baseStats: {
-        attack: 158,
-        hp: 1080,
-        defense: 76
+        attack: 138,
+        hp: 1480,
+        defense: 101
       },
 
       skills: [
@@ -62,9 +62,9 @@ const Guard = {
       subclass: "Primal Guard",
 
       baseStats: {
-        attack: 156,
-        hp: 1120,
-        defense: 83
+        attack: 136,
+        hp: 1520,
+        defense: 103
       },
 
       skills: [

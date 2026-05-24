@@ -230,14 +230,15 @@ export default class BattleSystem {
     onCorrectAnswer() {
         if (this.isBattleOver) return;
 
-        this.triggerOnAttackSkills(this.playerCharacter, this.enemyCharacter);
-        this.triggerOnComboSkills(this.playerCharacter);
-
         this.combo++;
         if (this.combo > this.maxCombo) {
             this.combo = this.maxCombo;
         }
+
         if (this.enemyCharacter._deathDelay?.active) return;
+        
+        this.triggerOnAttackSkills(this.playerCharacter, this.enemyCharacter);
+        this.triggerOnComboSkills(this.playerCharacter);
         
         const multiplier = this.getDamageMultiplier();
         const finalMultiplier = this.comboMultiplierBonus 
@@ -414,7 +415,9 @@ export default class BattleSystem {
             const baseAttack = this.playerAttack;
             const reflectDamage = Math.round(baseAttack * ratio);
         
-            this.enemyHP -= reflectDamage;
+            if (!this.enemyCharacter._deathDelay?.active) {
+                this.enemyHP -= reflectDamage;
+            }
             this.showDamageText(this.enemy, reflectDamage);
         }
 
@@ -1559,7 +1562,7 @@ export default class BattleSystem {
                 existing.duration = duration;
 
                 if (defenderChar._silence) {
-                    appliedDamage = Math.round(baseStats[targetStat] * 0.6);
+                    appliedDamage = Math.round(baseStats[targetStat] * 0.3);
                 }
 
                 existing.damage = appliedDamage;

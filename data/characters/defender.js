@@ -6,9 +6,9 @@ const Defender = {
       subclass: "Protector",
 
       baseStats: {
-        attack: 150,
-        hp: 1350,
-        defense: 88
+        attack: 130,
+        hp: 1750,
+        defense: 108
       },
 
       skills: [
@@ -56,13 +56,13 @@ const Defender = {
             {
               type: "buff",
               targetStat: "hp",
-              value: 0.15,
+              value: 0.05,
               duration: 16
             },
             {
               type: "buff",
               targetStat: "defense",
-              value: 0.05,
+              value: 0.15,
               duration: 16,
             },
             {
@@ -82,9 +82,9 @@ const Defender = {
       subclass: "Guardian",
 
       baseStats: {
-        attack: 153,
-        hp: 1420,
-        defense: 80
+        attack: 133,
+        hp: 1820,
+        defense: 100
       },
 
       skills: [
