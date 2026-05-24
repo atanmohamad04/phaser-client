@@ -6,8 +6,8 @@ const Specialist = {
       subclass: "Alchemist",
 
       baseStats: {
-        attack: 140,
-        hp: 1150,
+        attack: 153,
+        hp: 1180,
         defense: 87
       },
 

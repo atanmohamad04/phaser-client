@@ -282,7 +282,9 @@ export default class BattleSystem {
         
             this.showHealText(this.player, healAmount);
         } else {
-            this.enemyHP -= damage;
+            if (!this.enemyCharacter._deathDelay?.active) {
+                this.enemyHP -= damage;
+            }
         }
 
         this.triggerOnHpChangeSkills(this.enemyCharacter, "decreasing");
@@ -298,8 +300,10 @@ export default class BattleSystem {
         
             const baseAttack = this.enemyAttack;
             const reflectDamage = Math.round(baseAttack * ratio);
-        
-            this.playerHP -= reflectDamage;
+            
+            if (!this.playerCharacter._deathDelay?.active) {
+                this.playerHP -= reflectDamage;
+            }
             this.showDamageText(this.player, reflectDamage);
         }
 
@@ -315,13 +319,8 @@ export default class BattleSystem {
             this.showBonusDamageText(this.enemy, bonusDamage);
         }
         this.updateUI();
-        const gainedScore = 6.67;
-
-        if (this.score >= 100) {
-            this.score = this.score;
-        } else {
-            this.score += gainedScore;
-        }
+        const gainedScore = 10;
+        this.score += gainedScore;
 
         if (this.enemyHP <= 0) {
             if (!this.enemyCharacter._deathDelay?.active) {
@@ -377,7 +376,9 @@ export default class BattleSystem {
         
             this.showHealText(this.enemy, healAmount);
         } else {
-            this.playerHP -= damage;
+            if (!this.playerCharacter._deathDelay?.active) {
+                this.playerHP -= damage;
+            }
         }
 
         this.triggerOnHpChangeSkills(this.playerCharacter, "decreasing");
@@ -1564,14 +1565,18 @@ export default class BattleSystem {
                 callback: () => {
                     let target;
                     if (defenderChar === this.enemyCharacter) {
-                        this.enemyHP -= dotData.damage;
+                        if (!this.enemyCharacter._deathDelay?.active) {
+                            this.enemyHP -= dotData.damage;
+                        }
                         target = this.enemy;
 
                         if (this.enemyHP <= 0) {
                                 this.endBattle(true);
                         }
                     } else {
-                        this.playerHP -= dotData.damage;
+                        if (!this.playerCharacter._deathDelay?.active) {
+                            this.playerHP -= dotData.damage;
+                        }
                         target = this.player;
                         if (this.playerHP <= 0) {
                                 this.endBattle(true);

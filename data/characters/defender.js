@@ -6,7 +6,7 @@ const Defender = {
       subclass: "Protector",
 
       baseStats: {
-        attack: 148,
+        attack: 150,
         hp: 1350,
         defense: 88
       },

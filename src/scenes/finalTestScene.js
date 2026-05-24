@@ -189,7 +189,7 @@ export default class finalTestScene extends Phaser.Scene {
 
             this.waitingText = this.add.text(
               this.scale.width / 2,
-              this.scale.height / 2 + 250,
+              this.scale.height / 2,
               "Menunggu lawan...",
               {
                 fontFamily: 'Poppins, sans-serif',
