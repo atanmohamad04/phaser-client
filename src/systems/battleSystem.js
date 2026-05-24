@@ -315,8 +315,13 @@ export default class BattleSystem {
             this.showBonusDamageText(this.enemy, bonusDamage);
         }
         this.updateUI();
-        const gainedScore = this.timer * 2;
-        this.score += gainedScore;
+        const gainedScore = 6.67;
+
+        if (this.score >= 100) {
+            this.score = this.score;
+        } else {
+            this.score += gainedScore;
+        }
 
         if (this.enemyHP <= 0) {
             if (!this.enemyCharacter._deathDelay?.active) {
@@ -445,8 +450,8 @@ export default class BattleSystem {
         });
         this.showStaggerText(duration);
         
-        this.score -= 15;
-        this.score = Math.max(0, this.score);
+        // this.score -= 15;
+        // this.score = Math.max(0, this.score);
 
         if (this.playerHP <= 0) {
             if (!this.playerCharacter._deathDelay?.active) {
@@ -486,8 +491,8 @@ export default class BattleSystem {
         }
 
         this.combo = 0;
-        this.score -= 15;
-        this.score = Math.max(0, this.score);
+        // this.score -= 15;
+        // this.score = Math.max(0, this.score);
         this.updateUltimateButton();
 
         if (this.playerHP <= 0) {
@@ -1620,8 +1625,8 @@ export default class BattleSystem {
     }
 
     getStarByScore(score) {
-        if (score >= 250) return 1;
-        if (score >= 150) return 2;
+        if (score >= 80) return 1;
+        if (score >= 50) return 2;
         if (score > 0) return 3;
         return 4;
     }

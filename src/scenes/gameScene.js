@@ -41,7 +41,7 @@ export default class gameScene extends Phaser.Scene {
     this.isMultiplayer = data.isMultiplayer;
     this.selectedSkills = [];
     
-    this.coinGame = 0;
+    this.coinGame = 25;
     this.statueProgress = 0;
     this.totalStatue = 0;
 
