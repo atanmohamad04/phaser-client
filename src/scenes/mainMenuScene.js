@@ -46,7 +46,7 @@ export default class mainMenuScene extends Phaser.Scene {
             {
               name:"Blood Hound Ascension",
               type:"ultimate",
-              description:"Max HP +5%, ATK +10%. Serangan berubah menjadi True Damage. HP tidak dapat turun di bawah 1. Kehilangan 1.5% HP setiap detik (meningkat menjadi 3% per detik setelah 12 detik). Jika HP mencapai 1, unit akan mundur dari pertempuran setelah 15 detik. Durasi tidak terbatas."
+              description:"Max HP +20%, ATK +10%. Serangan berubah menjadi True Damage. HP tidak dapat turun di bawah 1. Kehilangan 1.5% HP setiap detik (meningkat menjadi 3% per detik setelah 12 detik). Jika HP mencapai 1, unit akan mundur dari pertempuran setelah 15 detik. Durasi tidak terbatas."
             }
           ]
         },

@@ -108,7 +108,7 @@ const Guard = {
             {
               type: "buff",
               targetStat: "hp",
-              value: 0.05
+              value: 0.2
             },
             {
               type: "buff",
