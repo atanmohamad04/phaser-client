@@ -94,12 +94,12 @@ const Defender = {
           trigger: "onNoDamageTaken",
 
           condition: {
-            duration: 9
+            duration: 10
           },
 
           effect: {
             type: "heal",
-            value: 0.015,
+            value: 0.01,
             target: "maxHp"
           }
         },
