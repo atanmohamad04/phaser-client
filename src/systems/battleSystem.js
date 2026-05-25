@@ -336,7 +336,7 @@ export default class BattleSystem {
             this.showBonusDamageText(this.enemy, bonusDamage);
         }
         this.updateUI();
-        const gainedScore = 10;
+        const gainedScore = 15;
         this.score += gainedScore;
 
         if (this.enemyHP <= 0) {
