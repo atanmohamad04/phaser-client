@@ -7,7 +7,7 @@ const finalTestQuestions = [
         correct: 1
     },
     {
-        question: "Garis yang menghubungkan titik asli dengan bayangannya selalu ... cermin.",
+        question: "Garis yang menghubungkan titik asli dengan bayangannya selalu ... dengan cermin.",
         options: ["Sejajar", "Tegak lurus", "Miring 45°", "Berpotongan"],
         correct: 1
     },
@@ -34,7 +34,7 @@ const finalTestQuestions = [
         correct: 2
     },
     {
-        question: "Titik P(3, 1) dicerminkan ke garis x = 5. Rumus x baru = 2(5) - 3 = ?",
+        question: "Titik P(3, 1) dicerminkan ke garis x = 5. Rumus bayangan x = 2(5) - 3 = ?",
         options: ["7", "8", "13", "2"],
         correct: 0
     },
@@ -51,7 +51,7 @@ const finalTestQuestions = [
         correct: 2
     },
     {
-        question: "P(2, -5) dicerminkan ke y = -x, rumusnya (x,y) → (-y, -x). Hasilnya adalah?",
+        question: "P(2, -5) dicerminkan ke y = -x, rumusnya (x,y) => (-y, -x). Hasilnya adalah?",
         options: ["(5, -2)", "(-5, 2)", "(2, 5)", "(-2, 5)"],
         correct: 0
     }

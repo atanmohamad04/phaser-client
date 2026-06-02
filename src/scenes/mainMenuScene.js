@@ -137,6 +137,19 @@ export default class mainMenuScene extends Phaser.Scene {
         this.load.image('rating_scroll', 'assets/ui/rating/scroll.png');
         this.load.image('rating_close', 'assets/ui/rating/close_2.png');
         this.load.image('rating_dot', 'assets/ui/rating/dot.png');
+        this.load.image('prologueBg', 'assets/ui/shop/bg.png');
+        this.load.image('prologueA1', 'assets/prologue/prologueA1.png');
+        this.load.image('prologueB1', 'assets/prologue/prologueB1.png');
+        this.load.image('prologueC1', 'assets/prologue/prologueC1.png');
+        this.load.image('prologueD1', 'assets/prologue/prologueD1.png');
+        this.load.image('prologueE1', 'assets/prologue/prologueE1.png');
+        this.load.image('prologueF1', 'assets/prologue/prologueF1.png');
+        this.load.image('prologueG1', 'assets/prologue/prologueG1.png');
+        this.load.image('prologueH1', 'assets/prologue/prologueH1.png');
+        this.load.image('prologueI1', 'assets/prologue/prologueI1.png');
+        this.load.image('prologueJ1', 'assets/prologue/prologueJ1.png');
+        this.load.image('prologueK1', 'assets/prologue/prologueK1.png');
+        this.load.image('prologueL1', 'assets/prologue/prologueL1.png');
         this.load.audio("bgmMenu", "assets/audio/lobbyTheme.mp3");
 
         this.characters.forEach(char => {
@@ -496,6 +509,176 @@ export default class mainMenuScene extends Phaser.Scene {
       
           this.updateCharacterDisplay();
         });
+
+        // Tampilkan prologue setiap kali masuk main menu
+        this.showPrologue();
+    }
+
+    showPrologue() {
+        const { width, height } = this.scale;
+        const cx = width / 2;
+        const cy = height / 2;
+
+        this.prologueSlides = [
+            'prologueA1', 'prologueB1', 'prologueC1', 'prologueD1',
+            'prologueE1', 'prologueF1', 'prologueG1', 'prologueH1',
+            'prologueI1', 'prologueJ1', 'prologueK1', 'prologueL1'
+        ];
+        this.prologueIndex = 0;
+
+        this.prologueTexts = [
+          "Sebelum memulai, pilih karakter dan lihat skill-skill yang akan kamu gunakan dalam pertarungan!",
+          "Gunakan tombol arah untuk menggerakkan karaktermu menjelajahi peta. Perhatikan Indicator Progress di pojok kiri atas!",
+          "Dekati Monument dan tekan tombol Interaksi untuk membaca isinya. Monument menyimpan materi pelajaran!",
+          "Baca materi yang ditampilkan dengan seksama. Materi ini akan membantumu menjawab soal dalam pertarungan!",
+          "Gunakan tombol interaksi untuk mengganti tampilan ilustrasi. Pahami konsep Refleksi terhadap Sumbu X dan Sumbu Y!",
+          "Temukan End Portal dan tekan Masuk untuk melanjutkan ke area berikutnya!",
+          "Jawab Quiz Singkat dengan memilih jawaban yang benar sebelum memasuki arena pertarungan!",
+          "Di Shop, kamu bisa membeli skill menggunakan koin. Pilih skill yang tepat untuk mengalahkan musuh!",
+          "Pertarungan dimulai! Jawab pertanyaan dengan benar sebelum Timer habis untuk menyerang musuh!",
+          "Jika kamu salah dalam menjawab pertanyaan selama pertarungan, karaktermu akan dapat efek Staggered yang membuat kamu tidak bisa menjawab soal selama 6 detik. Tetap semangat dan jawab soal berikutnya!",
+          "Jawab 3 soal berturut-turut dengan benar untuk memicu Combo! Saat Combo 3x tercapai, tombol Ultimate aktif. Ingat! tombol ultimate hanya bisa digunakan sekali dalam satu pertarungan, jadi gunakan dengan bijak!",
+          "Kalahkan semua musuh untuk menang! Raih bintang sebanyak-banyaknya dan tingkatkan skormu!",
+        ];
+
+        // Container utama prologue
+        this.prologueContainer = this.add.container(0, 0).setDepth(500);
+
+        const inputBlocker = this.add.rectangle(0, 0, width, height, 0x000000, 0)
+            .setOrigin(0)
+            .setScrollFactor(0)
+            .setInteractive();
+
+        // Overlay gelap di belakang popup
+        const overlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.75)
+            .setOrigin(0)
+            .setScrollFactor(0);
+
+        // Background popup
+        const bg = this.add.image(cx, cy, 'prologueBg')
+            .setScrollFactor(0)
+            .setDisplaySize(width * 1, height * 0.95);
+
+        // Gambar slide aktif
+        this.prologueSlideImg = this.add.image(cx, cy - 100, this.prologueSlides[0])
+            .setScrollFactor(0)
+            .setScale(0.45);
+
+        this.prologueCaption = this.add.text(cx, cy + 160, this.prologueTexts[0], {
+            fontFamily: 'Noto Sans, sans-serif',
+            fontSize: '32px',
+            fontStyle: 'bold',
+            color: '#ffffff',
+            align: 'center',
+            wordWrap: { width: width * 0.75 }
+        })
+        .setOrigin(0.5)
+        .setScrollFactor(0);
+
+        // Tombol Prev
+        this.prologuePrevBtn = this.add.image(cx - width * 0.42, cy, 'btnPrev')
+            .setScale(0.3)
+            .setScrollFactor(0)
+            .setInteractive()
+            .setAlpha(0); // slide pertama, prev disembunyikan
+
+        this.prologuePrevBtn.on('pointerdown', () => {
+            if (this.prologueIndex <= 0) return;
+            this.prologueIndex--;
+            this._updatePrologueSlide();
+        });
+
+        // Tombol Next
+        this.prologueNextBtn = this.add.image(cx + width * 0.42, cy, 'btnNext')
+            .setScale(0.3)
+            .setScrollFactor(0)
+            .setInteractive();
+
+        this.prologueNextBtn.on('pointerdown', () => {
+            if (this.prologueIndex >= this.prologueSlides.length - 1) return;
+            this.prologueIndex++;
+            this._updatePrologueSlide();
+        });
+
+        // Tombol "Mulai" — hanya muncul di slide terakhir
+        this.prologueStartBtn = this.add.text(cx, cy + height * 0.38, '✦  Mulai  ✦', {
+            fontFamily: 'Noto Sans, sans-serif',
+            fontSize: '28px',
+            fontStyle: 'bold',
+            color: '#ffffff',
+            backgroundColor: '#1a1a2e',
+            padding: { x: 32, y: 14 }
+        })
+        .setOrigin(0.5)
+        .setScrollFactor(0)
+        .setInteractive()
+        .setVisible(false);
+
+        this.prologueStartBtn.on('pointerdown', () => {
+            this.closePrologue();
+        });
+
+        // Indikator slide (dot)
+        this.prologueDots = [];
+        const totalSlides = this.prologueSlides.length;
+        const dotSpacing = 22;
+        const dotsStartX = cx - ((totalSlides - 1) * dotSpacing) / 2;
+        const dotsY = cy + height * 0.42;
+
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = this.add.circle(dotsStartX + i * dotSpacing, dotsY, 5, 0xffffff, i === 0 ? 1 : 0.3)
+                .setScrollFactor(0);
+            this.prologueDots.push(dot);
+        }
+
+        this.prologueContainer.add([
+            inputBlocker,
+            overlay, bg,
+            this.prologueSlideImg,
+            this.prologueCaption,
+            this.prologuePrevBtn, this.prologueNextBtn,
+            this.prologueStartBtn,
+            ...this.prologueDots
+        ]);
+    }
+
+    _updatePrologueSlide() {
+        const total = this.prologueSlides.length;
+        const idx = this.prologueIndex;
+
+        // Ganti gambar slide
+        this.prologueSlideImg.setTexture(this.prologueSlides[idx]);
+
+        this.prologueCaption.setText(this.prologueTexts[idx]);
+
+        // Prev: tampil jika bukan slide pertama
+        this.prologuePrevBtn.setAlpha(idx > 0 ? 1 : 0);
+
+        // Next: sembunyi di slide terakhir
+        this.prologueNextBtn.setVisible(idx < total - 1);
+
+        // Tombol Mulai: hanya di slide terakhir
+        this.prologueStartBtn.setVisible(idx === total - 1);
+
+        // Update dot
+        this.prologueDots.forEach((dot, i) => {
+            dot.setAlpha(i === idx ? 1 : 0.3);
+        });
+    }
+
+    closePrologue() {
+        if (this.prologueContainer) {
+            this.tweens.add({
+                targets: this.prologueContainer,
+                alpha: 0,
+                duration: 400,
+                ease: 'Linear',
+                onComplete: () => {
+                    this.prologueContainer.destroy(true);
+                    this.prologueContainer = null;
+                }
+            });
+        }
     }
 
     startAfterMatch() {

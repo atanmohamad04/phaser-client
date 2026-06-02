@@ -844,8 +844,8 @@ export default class gameScene extends Phaser.Scene {
       };
       const { width, height } = this.scale;
 
-      this.btnRight = this.add.image(width / 2 - 240, height / 2 + 100, "btnPlay")
-          .setScale(0.08)
+      this.btnRight = this.add.image(width / 2 - 200, height / 2 + 80, "btnPlay")
+          .setScale(0.12)
           .setScrollFactor(0)
           .setDepth(41000)
           .setInteractive();
@@ -860,8 +860,8 @@ export default class gameScene extends Phaser.Scene {
           this.cursorsMobile.right = false;
       });
 
-      this.btnLeft = this.add.image(width / 2 - 320, height / 2 + 100, "btnPlay")
-          .setScale(0.08)
+      this.btnLeft = this.add.image(width / 2 - 320, height / 2 + 80, "btnPlay")
+          .setScale(0.12)
           .setScrollFactor(0)
           .setDepth(41000)
           .setFlipX(true)
@@ -877,8 +877,8 @@ export default class gameScene extends Phaser.Scene {
           this.cursorsMobile.left = false;
       });
 
-      this.btnUp = this.add.image(width / 2 - 280, height / 2 + 60, "btnPlay")
-          .setScale(0.08)
+      this.btnUp = this.add.image(width / 2 - 260, height / 2 + 20, "btnPlay")
+          .setScale(0.12)
           .setScrollFactor(0)
           .setDepth(41000)
           .setRotation(-Math.PI / 2)
@@ -894,8 +894,8 @@ export default class gameScene extends Phaser.Scene {
           this.cursorsMobile.up = false;
       });
 
-      this.btnDown = this.add.image(width / 2 - 280, height / 2 + 140, "btnPlay")
-          .setScale(0.08)
+      this.btnDown = this.add.image(width / 2 - 260, height / 2 + 140, "btnPlay")
+          .setScale(0.12)
           .setScrollFactor(0)
           .setDepth(41000)
           .setRotation(Math.PI / 2)

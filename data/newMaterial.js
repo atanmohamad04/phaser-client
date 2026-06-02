@@ -127,8 +127,8 @@ const aturanKoordinat = [
     title: "Cermin di garis lain? Bisa juga!",
     content: [
       "Cermin tidak harus tepat di sumbu. Bisa di garis x = 2, atau y = -1, atau di mana saja.",
-      "Kalau cermin di garis x = h, rumusnya: x baru = 2h - x (y tetap).",
-      "Kalau cermin di garis y = k, rumusnya: y baru = 2k - y (x tetap).",
+      "Kalau cermin di garis x = h, rumusnya: bayangan x = 2h - x (y tetap).",
+      "Kalau cermin di garis y = k, rumusnya: bayangan y = 2k - y (x tetap).",
       "Kalau cermin di titik asal O(0,0), kedua koordinat tinggal dibalik: (x, y) => (-x, -y).",
       "Kedengarannya rumit? Tenang, coba dulu soal berikut, perlahan-lahan."
     ],
@@ -144,20 +144,20 @@ const aturanKoordinat = [
       action: "koordinatQuizFlow",
       steps: [
         {
-          question: "Titik A(3, 5) dicerminkan ke garis x = 2. Rumusnya: x baru = 2(2) - 3 = ?",
+          question: "Titik A(3, 5) dicerminkan ke garis x = 2. Rumusnya: bayangan x = 2(2) - 3 = ?",
           options: ["1", "-1", "4", "7"],
           correct: "1",
           stepFeedback: {
-            correct: "Benar! 2×2 - 3 = 4 - 3 = 1. Jadi x barunya 1, y tetap 5.",
+            correct: "Benar! 2×2 - 3 = 4 - 3 = 1. Jadi bayangan x-nya 1, y tetap 5.",
             wrong: "Coba hitung lagi: 2 × h - x = 2 × 2 - 3 = ?"
           }
         },
         {
-          question: "Titik B(4, 6) dicerminkan ke garis y = 1. Rumusnya: y baru = 2(1) - 6 = ?",
+          question: "Titik B(4, 6) dicerminkan ke garis y = 1. Rumusnya: bayangan y = 2(1) - 6 = ?",
           options: ["-4", "-6", "2", "-2"],
           correct: "-4",
           stepFeedback: {
-            correct: "Tepat! 2×1 - 6 = 2 - 6 = -4. Jadi y barunya -4, x tetap 4.",
+            correct: "Tepat! 2×1 - 6 = 2 - 6 = -4. Jadi bayangan y-nya -4, x tetap 4.",
             wrong: "Coba hitung lagi: 2 × k - y = 2 × 1 - 6 = ?"
           }
         },
@@ -268,8 +268,8 @@ const matriksRefleksi = [
       label: "Sumbu X",
       rows: [[1, 0], [0, -1]],
       caption: [
-        "x baru = 1\u00d73 + 0\u00d72 = 3",
-        "y baru = 0\u00d73 + (\u22121)\u00d72 = \u22122",
+        "bayangan x = 1\u00d73 + 0\u00d72 = 3",
+        "bayangan y = 0\u00d73 + (\u22121)\u00d72 = \u22122",
         "Hasilnya P'(3, \u22122). Sama seperti pakai rumus biasa!"
       ]
     }
