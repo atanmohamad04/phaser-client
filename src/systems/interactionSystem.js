@@ -11,7 +11,7 @@ export default class InteractionSystem {
     this.btnInteract.setInteractive();
 
     this.btnText = scene.add.text(0, 0, "", {
-      fontFamily: 'Poppins, sans-serif',
+      fontFamily: 'Noto Sans, sans-serif',
       fontSize: "11px",
       fontStyle: "bold",
       color: "#1c1c1c",

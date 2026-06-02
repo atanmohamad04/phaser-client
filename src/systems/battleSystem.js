@@ -42,6 +42,9 @@ export default class BattleSystem {
         const pStats = this.playerCharacter.getBaseStats();
         const eStats = this.enemyCharacter.getBaseStats();
 
+        console.log("player skills: ", this.playerCharacter.getSkills());
+        console.log("enemy skills: ", this.enemyCharacter.getSkills());
+
         this.playerHP = pStats.hp;
         this.playerMaxHP = pStats.hp;
         this.playerAttack = pStats.attack;
@@ -70,7 +73,7 @@ export default class BattleSystem {
         this.questionSystem = questionSystem;
     }
 
-    setUI({ playerName, enemyName, playerStatText, enemyStatText, comboText, ultimateButton, playerHpBarFill, enemyHpBarFill }) {
+    setUI({ playerName, enemyName, playerStatText, enemyStatText, comboText, ultimateButton, playerHpBarFill, enemyHpBarFill, playerHpMaskGraphics, enemyHpMaskGraphics, playerHpBarFullWidth, enemyHpBarFullWidth }) {
         this.playerStatText = playerStatText;
         this.enemyStatText = enemyStatText;
         this.comboText = comboText;
@@ -79,6 +82,10 @@ export default class BattleSystem {
         this.enemyName = enemyName;
         this.playerHpBarFill = playerHpBarFill;
         this.enemyHpBarFill = enemyHpBarFill;
+        this.playerHpMaskGraphics = playerHpMaskGraphics;
+        this.enemyHpMaskGraphics  = enemyHpMaskGraphics;
+        this.playerHpBarFullWidth = playerHpBarFullWidth;
+        this.enemyHpBarFullWidth  = enemyHpBarFullWidth;
     
         this.updateUI();
         this.updateUltimateButton();
@@ -104,28 +111,27 @@ export default class BattleSystem {
           this.comboText.setVisible(false);
         }
 
-        const playerHpPercent = this.playerHP / this.playerMaxHP;
-        const enemyHpPercent = this.enemyHP / this.enemyMaxHP;
-        this.hpBarBaseScaleX = 0.28;
-        this.hpBarBaseScaleY = 0.27;
+        const playerHpPercent = Math.max(this.playerHP / this.playerMaxHP, 0);
+        const enemyHpPercent  = Math.max(this.enemyHP  / this.enemyMaxHP,  0);
+        const barHeight = 20;
 
-        if (this.playerHP <= 0) {
-            this.playerHpBarFill.setScale(0, this.hpBarBaseScaleY);
-        } else {
-            this.playerHpBarFill.setScale(
-                this.hpBarBaseScaleX * playerHpPercent,
-                this.hpBarBaseScaleY
-            );
-        }
-        
-        if (this.enemyHP <= 0) {
-            this.enemyHpBarFill.setScale(0, this.hpBarBaseScaleY);
-        } else {
-            this.enemyHpBarFill.setScale(
-                this.hpBarBaseScaleX * enemyHpPercent,
-                this.hpBarBaseScaleY
-            );
-        }
+        this.playerHpMaskGraphics.clear();
+        this.playerHpMaskGraphics.fillStyle(0xffffff);
+        this.playerHpMaskGraphics.fillRect(
+            this.playerHpBarFill.x,
+            this.playerHpBarFill.y - barHeight / 2,
+            this.playerHpBarFullWidth * playerHpPercent,
+            barHeight
+        );
+
+        this.enemyHpMaskGraphics.clear();
+        this.enemyHpMaskGraphics.fillStyle(0xffffff);
+        this.enemyHpMaskGraphics.fillRect(
+            this.enemyHpBarFill.x - (this.enemyHpBarFullWidth * enemyHpPercent),
+            this.enemyHpBarFill.y - barHeight / 2,
+            this.enemyHpBarFullWidth * enemyHpPercent,
+            barHeight
+        );
     }
 
     updateTimerUI() {
@@ -234,8 +240,6 @@ export default class BattleSystem {
         if (this.combo > this.maxCombo) {
             this.combo = this.maxCombo;
         }
-
-        if (this.enemyCharacter._deathDelay?.active) return;
         
         this.triggerOnAttackSkills(this.playerCharacter, this.enemyCharacter);
         this.triggerOnComboSkills(this.playerCharacter);
@@ -298,10 +302,9 @@ export default class BattleSystem {
             this.showHealText(this.player, healAmount);
         } else {
             if (this.enemyCharacter._deathDelay?.active) {
-                // Jika deathDelay aktif, jangan kurangi HP sekarang. Biarkan timer di deathDelayStart yang menyelesaikan battle.
             } else {
                 this.enemyHP -= damage;
-            }
+            } 
         }
 
         this.triggerOnHpChangeSkills(this.enemyCharacter, "decreasing");
@@ -337,17 +340,16 @@ export default class BattleSystem {
         }
         this.updateUI();
         const gainedScore = 15;
-        this.score += gainedScore;
+
+        if (this.score >= 90) {
+            this.score = this.score
+        } else {
+            this.score += gainedScore;
+        }
 
         if (this.enemyHP <= 0) {
             if (!this.enemyCharacter._deathDelay?.active) {
                 this.endBattle(true);
-            }
-            else if (this.scene.isMultiplayer && this.scene.socket) {
-                this.scene.socket.emit("deathDelayActive", {
-                    character: "enemy",
-                    delay: this.enemyCharacter._deathDelayConfig?.delay
-                });
             }
         }
 
@@ -394,7 +396,6 @@ export default class BattleSystem {
             this.showHealText(this.enemy, healAmount);
         } else {
             if (this.playerCharacter._deathDelay?.active) {
-                // Jika deathDelay aktif, jangan kurangi HP sekarang. Biarkan timer di deathDelayStart yang menyelesaikan battle.
             } else {
                 this.playerHP -= damage;
             }
@@ -471,65 +472,70 @@ export default class BattleSystem {
           this.player.anims.play(getCharKey(this.playerCharacter, "idle", "front"), true);
         });
         this.showStaggerText(duration);
-        
-        // this.score -= 15;
-        // this.score = Math.max(0, this.score);
 
         if (this.playerHP <= 0) {
             if (!this.playerCharacter._deathDelay?.active) {
                 this.endBattle(true);
-            }
-            // Jika deathDelay aktif, biarkan timer di deathDelayStart yang menyelesaikan battle.
-            // Untuk multiplayer: broadcast sinyal deathDelay agar semua client menunggu.
-            else if (this.scene.isMultiplayer && this.scene.socket) {
-                this.scene.socket.emit("deathDelayActive", {
-                    character: "player",
-                    delay: this.playerCharacter._deathDelayConfig?.delay
-                });
             }
         }
         this.updateUltimateButton();
     }
 
-    // Taruh tepat setelah closing brace method onWrongAnswer()
     onWrongAnswerMultiplayer() {
         if (this.isBattleOver) return;
 
         const duration = this.questionSystem.applyStagger(6000, this.playerCharacter, this.enemyCharacter);
 
+        const playerSkills = this.playerCharacter.getSkills();
+        const hasSilenceUltimate = playerSkills.some(skill => {
+            if (skill.type !== "ultimate") return false;
+        
+            const effects = Array.isArray(skill.effect)
+                ? skill.effect
+                : [skill.effect];
+        
+            return effects.some(e => e.type === "silence");
+        });
+
         if (duration) {
             this.playerCharacter._isStaggered = true;
+        
             this.scene.time.delayedCall(duration, () => {
+                if (this.playerCharacter._isStaggered && hasSilenceUltimate && this.combo >= 3) {
+                    this.combo = 0;
+                    this.updateUltimateButton();
+                }
                 this.playerCharacter._isStaggered = false;
             });
-
-            this.time.delayedCall(200, () => {
-                this.player.anims.play(getCharKey(this.playerCharacter, "die"), true);
-                this.time.delayedCall(duration, () => {
-                    this.player.anims.play(getCharKey(this.playerCharacter, "idle", "front"), true);
-                });
-            });
-            this.showStaggerText(duration);
+        }
+        
+        if (this.playerCharacter._isStaggered && hasSilenceUltimate) {
+            if (this.combo < 3) {
+                this.combo = 0;
+                this.updateUltimateButton();
+            }
+        } else {
+            this.combo = 0;
         }
 
-        this.combo = 0;
-        // this.score -= 15;
-        // this.score = Math.max(0, this.score);
-        this.updateUltimateButton();
+        this.time.delayedCall(200, () => {
+            this.player.anims.play(getCharKey(this.playerCharacter, "die"), true);
+            this.time.delayedCall(duration, () => {
+                this.player.anims.play(getCharKey(this.playerCharacter, "idle", "front"), true);
+            });
+        });
+        this.showStaggerText(duration);
+
+        if (this.scene.isMultiplayer && this.scene.socket) {
+            this.scene.socket.emit("playerStagger", { duration: duration });
+        }
 
         if (this.playerHP <= 0) {
             if (!this.playerCharacter._deathDelay?.active) {
                 this.endBattle(true);
             }
-            // Jika deathDelay aktif, biarkan timer di deathDelayStart yang menyelesaikan battle.
-            // Broadcast ke semua client agar tidak langsung end di layar mereka.
-            else if (this.scene.isMultiplayer && this.scene.socket) {
-                this.scene.socket.emit("deathDelayActive", {
-                    character: "player",
-                    delay: this.playerCharacter._deathDelayConfig?.delay
-                });
-            }
         }
+        this.updateUltimateButton();
     }
 
     playerAttackTrigger() {
@@ -704,7 +710,7 @@ export default class BattleSystem {
         });
     }
 
-        showHealText(target, healAmount) {
+    showHealText(target, healAmount) {
         if (!target) return;
 
         const healText = this.scene.add.text(
@@ -1014,6 +1020,7 @@ export default class BattleSystem {
         if (this.playerCharacter._isStaggered && hasSilenceUltimate) {
             this.combo = 0;
             this.showStaggerText(null);
+            this.player.anims.play(getCharKey(this.playerCharacter, "idle", "front"), true);
         }
     
         this.triggerOnUltimateSkills(this.playerCharacter);
@@ -1027,6 +1034,7 @@ export default class BattleSystem {
         if (!this.ultimateButton) return;
 
         const isStaggered = this.playerCharacter?._isStaggered;
+        const isSilenced = !!this.playerCharacter?._silence;
 
         let canUse;
 
@@ -1035,6 +1043,8 @@ export default class BattleSystem {
         } else {
             canUse = (this.combo >= 3 && !this.isUltimateUsed);
         }
+        
+        if (isSilenced) canUse = false;
 
         this.ultimateButton.setAlpha(canUse ? 1 : 0.5);
 
@@ -1313,7 +1323,7 @@ export default class BattleSystem {
                 }
             });
         
-            attackerChar._hpDrain.boostTimer = this.scene.time.delayedCall(12000, () => {
+            attackerChar._hpDrain.boostTimer = this.scene.time.delayedCall(10000, () => {
                 attackerChar._hpDrain.currentValue *= 2;
             });
         }
@@ -1333,23 +1343,24 @@ export default class BattleSystem {
             attackerChar._deathDelay = {
                 active: true
             };
+
+            const isPlayer = attackerChar === this.playerCharacter;
+            if (isPlayer && this.scene.isMultiplayer && this.scene.socket) {
+                this.scene.socket.emit("deathDelayActive", { active: true });
+            }
         
             attackerChar._deathDelay.timer = this.scene.time.delayedCall(config.delay * 1000, () => {
                 attackerChar._deathDelay.active = false;
-            
+                
+                if (isPlayer && this.scene.isMultiplayer && this.scene.socket) {
+                    this.scene.socket.emit("deathDelayActive", { active: false });
+                }
+
                 if (attackerChar === this.playerCharacter) {
                     this.playerHP = 0;
-                    // Broadcast ke semua client bahwa death delay selesai, baru end battle
-                    if (this.scene.isMultiplayer && this.scene.socket) {
-                        this.scene.socket.emit("deathDelayEnd", { character: "player" });
-                    }
                     this.endBattle(true);
                 } else {
                     this.enemyHP = 0;
-                    // Broadcast ke semua client bahwa death delay selesai, baru end battle
-                    if (this.scene.isMultiplayer && this.scene.socket) {
-                        this.scene.socket.emit("deathDelayEnd", { character: "enemy" });
-                    }
                     this.endBattle(true);
                 }
             });
@@ -1586,7 +1597,6 @@ export default class BattleSystem {
                 callback: () => {
                     let target;
                     if (defenderChar === this.enemyCharacter) {
-                        // Jangan apply damage jika deathDelay sedang aktif
                         if (!this.enemyCharacter._deathDelay?.active) {
                             this.enemyHP -= dotData.damage;
                         }
@@ -1594,7 +1604,6 @@ export default class BattleSystem {
                     
                         if (this.enemyHP <= 0) {
                             if (this.enemyCharacter._deathDelayConfig && !this.enemyCharacter._deathDelay) {
-                                // Trigger deathDelay dulu, bukan langsung endBattle
                                 this.applyEffect({ type: "deathDelayStart" }, this.enemyCharacter, null);
                             } else if (!this.enemyCharacter._deathDelay?.active) {
                                 this.endBattle(true);
@@ -1608,7 +1617,6 @@ export default class BattleSystem {
                     
                         if (this.playerHP <= 0) {
                             if (this.playerCharacter._deathDelayConfig && !this.playerCharacter._deathDelay) {
-                                // Trigger deathDelay dulu, bukan langsung endBattle
                                 this.applyEffect({ type: "deathDelayStart" }, this.playerCharacter, null);
                             } else if (!this.playerCharacter._deathDelay?.active) {
                                 this.endBattle(true);
@@ -1656,8 +1664,20 @@ export default class BattleSystem {
                 duration: effect.duration
             };
 
+            if (isPlayer && this.scene.isMultiplayer && this.scene.socket) {
+                this.scene.socket.emit("silenceActive", {
+                    active: true,
+                    duration: effect.duration,
+                    isUltimateUsed: this.isUltimateUsed
+                });
+            }
+
             this.scene.time.delayedCall(effect.duration * 1000, () => {
                 targetChar._silence = null;
+
+                if (isPlayer && this.scene.isMultiplayer && this.scene.socket) {
+                    this.scene.socket.emit("silenceActive", { active: false });
+                }
             });
         }
     }

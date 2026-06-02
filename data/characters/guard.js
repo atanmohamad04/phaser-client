@@ -98,7 +98,7 @@ const Guard = {
         },
 
         {
-          name: "Blood Hound Ascension",
+          name: "Remnant Ash",
           type: "ultimate",
           trigger: "onUltimate",
 
@@ -108,12 +108,7 @@ const Guard = {
             {
               type: "buff",
               targetStat: "hp",
-              value: 0.2
-            },
-            {
-              type: "buff",
-              targetStat: "attack",
-              value: 0.1
+              value: 0.25
             },
             {
               type: "stateChange",
@@ -123,7 +118,8 @@ const Guard = {
             {
               type: "passiveRule",
               rule: "minimumHpLock",
-              value: 1
+              value: 1,
+              overriddenBy: "deathDelay"
             },
             {
               type: "hpDrain",
@@ -133,7 +129,8 @@ const Guard = {
             {
               type: "deathDelay",
               condition: "hp == 1 && enemyAlive",
-              delay: 15
+              delay: 10,
+              immunities: ["hpDrain", "incomingDamage"]
             }
           ]
         }

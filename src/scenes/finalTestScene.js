@@ -192,7 +192,7 @@ export default class finalTestScene extends Phaser.Scene {
               this.scale.height / 2,
               "Menunggu lawan...",
               {
-                fontFamily: 'Poppins, sans-serif',
+                fontFamily: 'Noto Sans, sans-serif',
                 fontSize: "28px",
                 fontStyle: "bold",
                 color: "#ffffff"
@@ -305,29 +305,64 @@ export default class finalTestScene extends Phaser.Scene {
 
         socket.on("timerSync", (data) => {
             if (this.battleSystem.isBattleOver) return;
-            // Paksa timer client mengikuti timer server
             this.battleSystem.timer = data.timer;
             this.battleSystem.updateTimerUI();
         });
         
         socket.on("timerTimeout", () => {
             if (this.battleSystem.isBattleOver) return;
-            // Jalankan handleTimeout yang sudah ada di battleSystem
             this.battleSystem.handleTimeout();
         });
 
         socket.on("hpSync", (data) => {
             if (this.battleSystem.isBattleOver) return;
+    
             this.battleSystem.playerHP = data.enemyHP;
-            this.battleSystem.enemyHP  = data.playerHP;
+            this.battleSystem.enemyHP = data.playerHP;
+
             this.battleSystem.updateUI();
         });
 
-        this.socket.on("deathDelayActive", ({ character, delay }) => {
+        socket.on("enemyStagger", (data) => {
+            const duration = data.duration;
+
+            this.enemy.anims.play(getCharKey(this.battleSystem.enemyCharacter, "die"), true);
+            this.time.delayedCall(duration, () => {
+                this.enemy.anims.play(getCharKey(this.battleSystem.enemyCharacter, "idle", "front"), true);
+            });
         });
-        
-        this.socket.on("deathDelayEnd", ({ character }) => {
-            this.battleSystem.endBattle(character === "player" ? false : true);
+
+        socket.on("deathDelayActive", (data) => {
+            if (data.active) {
+                this.battleSystem.enemyCharacter._deathDelay = { active: true };
+            } else {
+                if (this.battleSystem.enemyCharacter._deathDelay) {
+                    this.battleSystem.enemyCharacter._deathDelay.active = false;
+                }
+            }
+        });
+
+        socket.on("silenceActive", (data) => {
+            if (data.active) {
+                const targetChar = this.battleSystem.playerCharacter;
+                const targetCharSkills = targetChar.getSkills();
+            
+                let blockSkills;
+                if (!data.isUltimateUsed) {
+                    blockSkills = targetCharSkills.filter(skill => skill.type === "ultimate");
+                } else {
+                    blockSkills = targetCharSkills.filter(skill => skill.type === "passive");
+                }
+            
+                targetChar._silence = {
+                    blockSkills: blockSkills,
+                    duration: data.duration
+                };
+                this.battleSystem.updateUltimateButton();
+            } else {
+                this.battleSystem.playerCharacter._silence = null;
+                this.battleSystem.updateUltimateButton();
+            }
         });
 
         socket.on("opponentWon", () => {

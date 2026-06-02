@@ -3,8 +3,16 @@ import gameScene from "./src/scenes/gameScene.js";
 import finalTestScene from './src/scenes/finalTestScene.js';
 import LoadingScene from "./src/scenes/loadingScene.js";
 
-const SERVER_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-  ? "http://192.168.18.14:3000"
+const hostname = window.location.hostname;
+
+const isLocal = hostname === "localhost" 
+  || hostname === "127.0.0.1"
+  || hostname.startsWith("192.168.")
+  || hostname.startsWith("10.")
+  || hostname.startsWith("172.");
+
+const SERVER_URL = isLocal
+  ? `http://${hostname}:3000`
   : "https://phaser-server-production.up.railway.app/";
 
 window.socket = io(SERVER_URL);

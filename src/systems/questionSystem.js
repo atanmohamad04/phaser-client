@@ -28,14 +28,14 @@ export default class QuestionSystem {
         this.questionContainer.setDepth(4001);
         this.questionContainer.setScrollFactor(0);
 
-        const bg = scene.add.image(850, 200, "timerBg")
+        this.bg = scene.add.image(850, 200, "timerBg")
             .setScale(0.575, 0.325)
             .disableInteractive()
             .setOrigin(0.5)
             .setPosition(0, 30);
 
         this.questionText = scene.add.text(0, 0, '', {
-            fontFamily: 'Poppins, sans-serif',
+            fontFamily: 'Noto Sans, sans-serif',
             fontSize:   '18px',
             fill:       '#ffffff',
             fontStyle:  "bold",
@@ -43,7 +43,7 @@ export default class QuestionSystem {
         }).setOrigin(0.5, 0);
         this.questionText.setPosition(0, -90);
 
-        this.questionContainer.add([bg, this.questionText]);
+        this.questionContainer.add([this.bg, this.questionText]);
         this.questionContainer.iterate(child => child.setScrollFactor(0));
 
         this.loadQuestion();
@@ -62,7 +62,9 @@ export default class QuestionSystem {
 
         this.questionText.setText(q.question);
 
-        this.answerButtons.forEach(btn => btn.destroy());
+        this.answerButtons.forEach(btn => {
+            this.questionContainer.remove(btn, true);
+        });
         this.answerButtons = [];
 
         const startY   = -10;
@@ -76,7 +78,7 @@ export default class QuestionSystem {
                 .setScale(0.575, 0.175);
 
             const txt = scene.add.text(0, 0, opt, {
-                fontFamily: 'Poppins, sans-serif',
+                fontFamily: 'Noto Sans, sans-serif',
                 fontSize:   '16px',
                 fontStyle:  "bold",
                 color:      '#151515',

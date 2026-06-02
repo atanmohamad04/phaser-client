@@ -44,9 +44,9 @@ export default class mainMenuScene extends Phaser.Scene {
               description:"Memiliki 10% peluang untuk menghindari serangan yang masuk."
             },
             {
-              name:"Blood Hound Ascension",
+              name:"Remnant Ash",
               type:"ultimate",
-              description:"Max HP +20%, ATK +10%. Serangan berubah menjadi True Damage. HP tidak dapat turun di bawah 1. Kehilangan 1.5% HP setiap detik (meningkat menjadi 3% per detik setelah 12 detik). Jika HP mencapai 1, unit akan mundur dari pertempuran setelah 15 detik. Durasi tidak terbatas."
+              description:"Max HP +25%. Serangan berubah menjadi True Damage. HP tidak dapat turun di bawah 1. Kehilangan 1.5% HP setiap detik (meningkat menjadi 3% per detik setelah 10 detik). Jika HP mencapai 1, unit akan mundur dari pertempuran setelah 10 detik. Durasi tidak terbatas."
             }
           ]
         },
@@ -83,7 +83,7 @@ export default class mainMenuScene extends Phaser.Scene {
             {
               name:"Penumbral Image",
               type:"passive",
-              description:"Durasi Stagger -1.4 detik. Setiap 20 detik sejak pertempuran dimulai: Max HP +1%, DEF +0.5% (maks. 3 stack)."
+              description:"Durasi Stagger -1.4 detik. Setiap 15 detik sejak pertempuran dimulai: Max HP +1%, DEF +0.5% (maks. 3 stack)."
             },
             {
               name:"Myriad Grains",
@@ -192,14 +192,14 @@ export default class mainMenuScene extends Phaser.Scene {
             .setVisible(false);
         
           let title = this.add.text(this.scale.width / 2 - 360, baseY - 10, "", {
-            fontFamily: 'Poppins, sans-serif',
+            fontFamily: 'Noto Sans, sans-serif',
             fontSize: "20px",
             color: "#ffffff",
             fontStyle: "bold"
           }).setDepth(102).setVisible(false);
         
           let desc = this.add.text(this.scale.width / 2 - 360, baseY + 20, "", {
-            fontFamily: 'Poppins, sans-serif',
+            fontFamily: 'Noto Sans, sans-serif',
             fontSize: "18px",
             color: "#ebebeb",
             wordWrap: { width: 730 }
@@ -210,21 +210,22 @@ export default class mainMenuScene extends Phaser.Scene {
 
         const { width, height } = this.scale;
 
-        this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.3)
+        this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.4)
         .setOrigin(0)
         .setDepth(1);
 
         this.add.image(width / 2, height / 2, "bgMenu")
         .setDisplaySize(width, height);
 
-        this.gameTitle = this.add.text(this.scale.width / 2, 120, 'MATH GAMES', {
-          fontFamily: 'Poppins, sans-serif',
-          fontSize: '72px',
-          fontStyle: 'bold',
+        this.gameTitle = this.add.text(this.scale.width / 2, 250, 'ISOMETRIA', {
+          fontFamily: 'Noto Sans, sans-serif',
+          fontSize: '96px',
+          fontStyle: '900',
           fill: '#ffffff'
         })
         .setOrigin(0.5)
         .setDepth(10)
+        .setStroke('#ffffff', 3)
         .setScrollFactor(0);
 
         const centerY = height / 2 + 100;
@@ -251,7 +252,7 @@ export default class mainMenuScene extends Phaser.Scene {
 
           this.searchText = this.add.text(this.scale.width / 2, this.scale.height / 2, "Mencari lawan...",
             {
-              fontFamily: 'Poppins, sans-serif',
+              fontFamily: 'Noto Sans, sans-serif',
               fontSize: "42px",
               color: "#ffffff"
             }
@@ -395,7 +396,7 @@ export default class mainMenuScene extends Phaser.Scene {
               this.scale.height / 2 + 250,
               "Menunggu lawan...",
               {
-                fontFamily: 'Poppins, sans-serif',
+                fontFamily: 'Noto Sans, sans-serif',
                 fontSize: "28px",
                 fontStyle: "bold",
                 color: "#ffffff"
@@ -423,7 +424,7 @@ export default class mainMenuScene extends Phaser.Scene {
           this.scale.height / 2 - 230,
           "",
           {
-            fontFamily: 'Poppins, sans-serif',
+            fontFamily: 'Noto Sans, sans-serif',
             fontSize: "22px",
             fontStyle: "bold",
             color: "#ffffff",
@@ -439,7 +440,7 @@ export default class mainMenuScene extends Phaser.Scene {
           this.scale.height / 2 - 160,
           "",
           {
-            fontFamily: 'Poppins, sans-serif',
+            fontFamily: 'Noto Sans, sans-serif',
             fontSize: "22px",
             fontStyle: "bold",
             color: "#ffffff",

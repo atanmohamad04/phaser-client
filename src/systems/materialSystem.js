@@ -1,7 +1,7 @@
 import MaterialInteractionSystem from "./materialInteractionSystem.js";
-import { firstMonument } from "./interactions/firstMonument.js";
-import { secondMonument } from "./interactions/secondMonument.js";
-import { thirdMonument } from "./interactions/thirdMonument.js";
+import { newFirstMonument } from "./interactions/newFirstMonument.js";
+import { newSecondMonument } from "./interactions/newSecondMonument.js";
+import { newThirdMonument } from "./interactions/newThirdMonument.js";
 import { fourthMonument } from "./interactions/fourthMonument.js";
 import { fifthMonument } from "./interactions/fifthMonument.js";
 
@@ -9,12 +9,12 @@ export default class MaterialSystem {
   constructor(scene) {
     this.scene = scene;
     this.materialInteraction = new MaterialInteractionSystem(scene);
-    this.materialInteraction.registerHandler("statueLeft1", firstMonument);
-    this.materialInteraction.registerHandler("statueRight1", firstMonument);
-    this.materialInteraction.registerHandler("statueLeft2", secondMonument);
-    this.materialInteraction.registerHandler("statueRight2", secondMonument);
-    this.materialInteraction.registerHandler("statueLeft3", thirdMonument);
-    this.materialInteraction.registerHandler("statueRight3", thirdMonument);
+    this.materialInteraction.registerHandler("statueLeft1", newFirstMonument);
+    this.materialInteraction.registerHandler("statueRight1", newFirstMonument);
+    this.materialInteraction.registerHandler("statueLeft2", newSecondMonument);
+    this.materialInteraction.registerHandler("statueRight2", newSecondMonument);
+    this.materialInteraction.registerHandler("statueLeft3", newThirdMonument);
+    this.materialInteraction.registerHandler("statueRight3", newThirdMonument);
     this.materialInteraction.registerHandler("statueLeft4", fourthMonument);
     this.materialInteraction.registerHandler("statueRight4", fourthMonument);
     this.materialInteraction.registerHandler("statueLeft5", fifthMonument);

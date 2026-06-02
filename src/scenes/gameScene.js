@@ -1,7 +1,7 @@
 import MaterialSystem from "../systems/materialSystem.js";
 import InteractionSystem from "../systems/interactionSystem.js";
 import MovementSystem from "../systems/movementSystem.js";
-import materialsData from "../../data/material.js";
+import materialsData from "../../data/newMaterial.js";
 import CharacterSystem from '../systems/characterSystem.js';
 import { loadCharSprites } from "../utils/loadCharSprites.js";
 import { createCharAnimations } from "../utils/createCharAnimations.js";
@@ -41,7 +41,7 @@ export default class gameScene extends Phaser.Scene {
     this.isMultiplayer = data.isMultiplayer;
     this.selectedSkills = [];
     
-    this.coinGame = 0;
+    this.coinGame = 15;
     this.statueProgress = 0;
     this.totalStatue = 0;
 
@@ -54,9 +54,9 @@ export default class gameScene extends Phaser.Scene {
 
     // MAP
     if (this.isMultiplayer) {
-      this.load.tilemapTiledJSON("map", "assets/maps/map.tmj");
+      this.load.tilemapTiledJSON("map", "assets/maps/newMap_debug.tmj");
     } else {
-      this.load.tilemapTiledJSON("map", "assets/maps/map_singlePlayer.tmj");
+      this.load.tilemapTiledJSON("map", "assets/maps/newMap_singlePlayer_debug.tmj");
     }
 
     // BACKGROUND MAP
@@ -125,6 +125,9 @@ export default class gameScene extends Phaser.Scene {
     this.load.image("btnInteract", "assets/ui/shop/btn.png");
     this.load.image("prologueCloud", "assets/ui/clouds/4.png");
     this.load.image("btnPlay", "assets/ui/menu/play.png");
+
+    // ILLUSTRATIONS
+    this.load.image("illust_1.1", "assets/sprite/illust_1.1.png")
   }
 
   create() {
@@ -162,18 +165,16 @@ export default class gameScene extends Phaser.Scene {
     this.enemyCharacter.selectedSubclass = this.enemyData.subclass;
 
     this.prologueTexts = [
-      "Selamat datang di Dungeon Terra...",
+      "Selamat datang di Isometria",
       "Carilah monument di tiap lantai untuk menambah wawasanmu.",
       "Pengetahuan adalah kekuatan. Kumpulkan kekuatanmu untuk menghadapi musuh."
     ];
 
     this.floorData = {
-      1: "DASAR PELUANG",
-      2: "RUANG SAMPEL",
-      3: "RUMUS PELUANG",
-      4: "PELUANG BERSYARAT",
-      5: "PELUANG SALING BEBAS",
-      6: "END PORTAL"
+      1: "KONSEP DASAR & SIFAT-SIFAT REFLEKSI",
+      2: "ATURAN KOORDINAT REFLEKSI",
+      3: "REPRESENTASI MATRIKS & KOMPOSISI REFLEKSI",
+      4: "END PORTAL"
     };
 
     this.currentPrologueIndex = 0;
@@ -231,6 +232,10 @@ export default class gameScene extends Phaser.Scene {
           this.currentFloor += 1;
           this.showFloorTitle();
       });
+
+      window.socket.on("enemySkillsSelected", (data) => {
+          this.enemyData.skills = data.skills;
+      });
     }
 
     this.materialSystem = new MaterialSystem(this);
@@ -283,7 +288,7 @@ export default class gameScene extends Phaser.Scene {
     this.prologueCloud.setScale(0.28, 0.17).setDepth(2000);
     
     this.prologueText = this.add.text(x, y, "", {
-      fontFamily: 'Poppins, sans-serif',
+      fontFamily: 'Noto Sans, sans-serif',
       fontSize: "12px",
       color: "#171717",
       align: "center",
@@ -328,20 +333,20 @@ export default class gameScene extends Phaser.Scene {
     const centerY = this.cameras.main.centerY;
 
     this.floorText = this.add.text(centerX, centerY - 100, `FLOOR ${floor}`, {
-      fontFamily: 'Poppins, sans-serif',
-      fontSize: "68px",
-      fontStyle: "bold",
+      fontFamily: 'Noto Sans, sans-serif',
+      fontSize: "74px",
+      fontStyle: "900",
       color: "#ffffff",
       align: "center"
-    }).setOrigin(0.5).setAlpha(0).setDepth(4000).setScrollFactor(0);
+    }).setOrigin(0.5).setAlpha(0).setDepth(4000).setStroke('#ffffff', 1).setScrollFactor(0);
 
-    this.titleText = this.add.text(centerX, centerY - 55, title, {
-      fontFamily: 'Poppins, sans-serif',
-      fontSize: "24px",
-      fontStyle: "bold",
+    this.titleText = this.add.text(centerX, centerY - 50, title, {
+      fontFamily: 'Noto Sans, sans-serif',
+      fontSize: "28px",
+      fontStyle: "900",
       color: "#ffffff",
       align: "center"
-    }).setOrigin(0.5).setAlpha(0).setDepth(4000).setScrollFactor(0);
+    }).setOrigin(0.5).setAlpha(0).setDepth(4000).setStroke('#ffffff', 0.5).setScrollFactor(0);
 
     this.tweens.add({
       targets: [this.floorText, this.titleText],
@@ -511,7 +516,7 @@ export default class gameScene extends Phaser.Scene {
         .setDepth(10002);
           
       const coinText = this.add.text(centerX + 238, centerY - 130, this.playerCoins, {
-        fontFamily: 'Poppins, sans-serif',
+        fontFamily: 'Noto Sans, sans-serif',
         fontSize: "20px",
         color: "#ffffff",
       })
@@ -533,35 +538,17 @@ export default class gameScene extends Phaser.Scene {
           this.isTransitioning = true;
         
           this.playerData.skills = this.selectedSkills;
-        
-          const player = resolveCharacter(this.playerData);
-          const enemy = resolveCharacter(this.enemyData);
-        
-          this.tweens.add({
-              targets: this.gameMusic,
-              volume: 0,
-              duration: 1000,
-              ease: "Linear",
-              onComplete: () => {
-                  this.gameMusic.stop();
-              
-                  this.scene.start('finalTestScene', {
-                      player,
-                      enemy,
-                      isMultiplayer: this.isMultiplayer,
-                      myId: this.myId,
-                      myRole: this.myRole,
-                      mySpawn: this.mySpawn,
-                      enemySpawn: this.enemySpawn,
-                      socket: window.socket
-                  });
-              }
-          });
+
+          if (this.isMultiplayer && window.socket) {
+            window.socket.emit("skillsSelected", { skills: this.selectedSkills });
+          }
+
+          this.startFinalScene();
         
       });
       
       skills.forEach((skill, index) => {
-        const price = skill.type === "ultimate" ? 15 : 10;
+        const price = skill.type === "ultimate" ? 10 : 5;
         const isAffordable = this.coinGame >= price;
         
         const x = positions[index];
@@ -607,7 +594,7 @@ export default class gameScene extends Phaser.Scene {
         .setDepth(10003);
 
         const priceText = this.add.text(x, btnY - 16.5, price, {
-          fontFamily: 'Poppins, sans-serif',
+          fontFamily: 'Noto Sans, sans-serif',
           fontSize: "12px",
           color: isAffordable ? "#141414" : "#d60d0d",
         })
@@ -623,7 +610,7 @@ export default class gameScene extends Phaser.Scene {
           .setDepth(10002);
       
         const title = this.add.text(x - 40, y - 74, skill.name, {
-          fontFamily: 'Poppins, sans-serif',
+          fontFamily: 'Noto Sans, sans-serif',
           fontSize: "12px",
           color: "#000000",
           fontStyle: "bold",
@@ -634,7 +621,7 @@ export default class gameScene extends Phaser.Scene {
         .setDepth(10002);
       
         const desc = this.add.text(x, y - 50, skill.description, {
-          fontFamily: 'Poppins, sans-serif',
+          fontFamily: 'Noto Sans, sans-serif',
           fontSize: "10px",
           color: "#000000",
           fontStyle: "bold",
@@ -661,6 +648,32 @@ export default class gameScene extends Phaser.Scene {
       this.statueProgress += 1;
 
       this.updateUI();
+    }
+
+    startFinalScene() {
+        console.log("pass 4");
+        const player = resolveCharacter(this.playerData);
+        const enemy  = resolveCharacter(this.enemyData);
+    
+        this.tweens.add({
+            targets: this.gameMusic,
+            volume: 0,
+            duration: 1000,
+            ease: "Linear",
+            onComplete: () => {
+                this.gameMusic.stop();
+                this.scene.start('finalTestScene', {
+                    player,
+                    enemy,
+                    isMultiplayer: this.isMultiplayer,
+                    myId: this.myId,
+                    myRole: this.myRole,
+                    mySpawn: this.mySpawn,
+                    enemySpawn: this.enemySpawn,
+                    socket: window.socket
+                });
+            }
+        });
     }
 
     createShadow(scene, x, y) {
@@ -965,26 +978,26 @@ export default class gameScene extends Phaser.Scene {
       const cam = this.cameras.main;
 
       this.materialText = this.add.text(0, 0, "", {
-        fontFamily: 'Poppins, sans-serif',
+        fontFamily: 'Noto Sans, sans-serif',
         fontSize: "16px",
         color: "#ffffff",
         padding: { x: 10, y: 10 },
+        lineSpacing: 3,
         align: "left",
         wordWrap: {
-          width: maxWidth,
-          useAdvancedWrap: true
+          width: 700
         }
       });
 
       this.materialText.setScrollFactor(0);
       this.materialText.setDepth(2001);
       this.materialText.setVisible(false);
-      this.materialText.setPosition(cam.width / 2, cam.height / 2 - 50);
-      this.materialText.setOrigin(0.5);
+      this.materialText.setPosition(cam.width / 2, cam.height / 2 - 160);
+      this.materialText.setOrigin(0.5, 0);
 
       this.materialPanel = this.add.image(this.scale.width / 2, this.scale.height / 2, "shop_bg");
       this.materialPanel.setScrollFactor(0);
-      this.materialPanel.setScale(0.5, 0.3);
+      this.materialPanel.setScale(0.6, 0.375);
       this.materialPanel.setDepth(2000);
       this.materialPanel.setVisible(false);
       this.materialPanel.setPosition(cam.width / 2, cam.height / 2);
@@ -995,7 +1008,7 @@ export default class gameScene extends Phaser.Scene {
       this.materialBg.setVisible(false);
       this.materialBg.setPosition(cam.width / 2, cam.height / 2);
 
-      this.btnNext = this.add.image(this.scale.width / 2 + 280, this.scale.height / 2 + 110, "btnNext");
+      this.btnNext = this.add.image(this.scale.width / 2 + 320, this.scale.height / 2 + 130, "btnNext");
       this.btnNext.setScrollFactor(0);
       this.btnNext.setScale(0.18);
       this.btnNext.setDepth(2000);
@@ -1003,13 +1016,13 @@ export default class gameScene extends Phaser.Scene {
       this.btnNext.setInteractive();
       this.btnNext.on("pointerdown", () => {this.materialSystem.tryNextPage();});
 
-      this.feedbackIcon = this.add.image(this.scale.width / 2 + 280, this.scale.height / 2 + 60, "feedback");
+      this.feedbackIcon = this.add.image(this.scale.width / 2 + 320, this.scale.height / 2, "feedback");
       this.feedbackIcon.setScrollFactor(0);
       this.feedbackIcon.setScale(0.18);
       this.feedbackIcon.setDepth(2000);
       this.feedbackIcon.setVisible(false);
 
-      this.feedbackCloud = this.add.image(this.scale.width / 2 + 150, this.scale.height / 2 - 35, "feedbackCloud");
+      this.feedbackCloud = this.add.image(this.scale.width / 2 + 200, this.scale.height / 2 - 95, "feedbackCloud");
       this.feedbackCloud.setScrollFactor(0);
       this.feedbackCloud.setScale(0.425, 0.275);
       this.feedbackCloud.setDepth(3000);

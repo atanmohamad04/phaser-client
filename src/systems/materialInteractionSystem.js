@@ -48,6 +48,10 @@ export default class MaterialInteractionSystem {
             createButton(this, slide);
             return;
         }
+        if (type === "inlineMatrix" || type === "tipsMatrix") {
+            this.executeAction(action, slide);
+            return;
+        }
 
         this.executeAction(action, slide);
     }

@@ -4,7 +4,7 @@ export function createClickOption(system, slide) {
     const scene = system.scene;
 
     const centerX = scene.cameras.main.width / 2;
-    const baseY = scene.cameras.main.height / 2 + 40;
+    const baseY = scene.cameras.main.height / 2;
 
     const options = slide.interaction.options;
 

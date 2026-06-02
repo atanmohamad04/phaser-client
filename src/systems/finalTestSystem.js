@@ -22,7 +22,7 @@ export default class FinalTestSystem {
         }).setDepth(4001).setScrollFactor(0);
 
         this.comboText = scene.add.text(315, 230, '', {
-            fontFamily: 'Poppins, sans-serif',
+            fontFamily: 'Noto Sans, sans-serif',
             fontSize: '22px',
             fontStyle: "bold",
             fill: '#fff'
@@ -49,7 +49,7 @@ export default class FinalTestSystem {
         });
         
         this.playerName = scene.add.text(315, 170, '', {
-            fontFamily: 'Poppins, sans-serif',
+            fontFamily: 'Noto Sans, sans-serif',
             fontSize: '18px',
             fontStyle: "bold",
             fill: '#fff'
@@ -58,7 +58,7 @@ export default class FinalTestSystem {
         .setScrollFactor(0);
 
         this.enemyName = scene.add.text(1160, 170, '', {
-            fontFamily: 'Poppins, sans-serif',
+            fontFamily: 'Noto Sans, sans-serif',
             fontSize: '18px',
             fontStyle: "bold",
             fill: '#fff'
@@ -101,6 +101,17 @@ export default class FinalTestSystem {
           .setScrollFactor(0)
           .setOrigin(1, 0.5)
           .setFlipX(true);
+
+        this.playerHpBarFullWidth = this.playerHpBarFill.displayWidth;
+        this.enemyHpBarFullWidth  = this.enemyHpBarFill.displayWidth;
+
+        this.playerHpMaskGraphics = scene.add.graphics().setScrollFactor(0);
+        const playerMask = this.playerHpMaskGraphics.createGeometryMask();
+        this.playerHpBarFill.setMask(playerMask);
+
+        this.enemyHpMaskGraphics = scene.add.graphics().setScrollFactor(0);
+        const enemyMask = this.enemyHpMaskGraphics.createGeometryMask();
+        this.enemyHpBarFill.setMask(enemyMask);
         
         this.timerBg = scene.add.image(817.5, 160, "timerBg")
           .setScale(0.125, 0.1125)
@@ -124,7 +135,11 @@ export default class FinalTestSystem {
             playerName: this.playerName,
             enemyName: this.enemyName,
             playerHpBarFill: this.playerHpBarFill,
-            enemyHpBarFill: this.enemyHpBarFill
+            enemyHpBarFill: this.enemyHpBarFill,
+            playerHpMaskGraphics: this.playerHpMaskGraphics,
+            enemyHpMaskGraphics:  this.enemyHpMaskGraphics, 
+            playerHpBarFullWidth: this.playerHpBarFullWidth,
+            enemyHpBarFullWidth:  this.enemyHpBarFullWidth
         });
     
         this.battleSystem.setQuestionSystem(this.questionSystem);
