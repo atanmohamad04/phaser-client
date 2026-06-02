@@ -432,7 +432,7 @@ export default class BattleSystem {
         this.comboMultiplierBonus = 1;
         this.showDamageText(this.player, damage);
 
-        const duration = this.questionSystem.applyStagger(6000, this.playerCharacter, this.enemyCharacter);
+        const duration = this.questionSystem.applyStagger(4000, this.playerCharacter, this.enemyCharacter);
 
         const playerSkills = this.playerCharacter.getSkills();
         const hasSilenceUltimate = playerSkills.some(skill => {
@@ -484,7 +484,7 @@ export default class BattleSystem {
     onWrongAnswerMultiplayer() {
         if (this.isBattleOver) return;
 
-        const duration = this.questionSystem.applyStagger(6000, this.playerCharacter, this.enemyCharacter);
+        const duration = this.questionSystem.applyStagger(4000, this.playerCharacter, this.enemyCharacter);
 
         const playerSkills = this.playerCharacter.getSkills();
         const hasSilenceUltimate = playerSkills.some(skill => {
@@ -654,7 +654,7 @@ export default class BattleSystem {
         });
     }
 
-   showStaggerText(duration = 6000) {
+   showStaggerText(duration = 4000) {
         if (!this.player) return;
 
         if (this.staggerText) {

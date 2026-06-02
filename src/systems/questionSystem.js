@@ -177,7 +177,7 @@ export default class QuestionSystem {
         this.loadQuestion();
     }
 
-    applyStagger(duration = 6000, targetChar, sourceChar) {
+    applyStagger(duration = 4000, targetChar, sourceChar) {
         if (this.isStaggered) return;
 
         this.isStaggered = true;

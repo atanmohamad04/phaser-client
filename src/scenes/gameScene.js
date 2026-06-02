@@ -41,7 +41,7 @@ export default class gameScene extends Phaser.Scene {
     this.isMultiplayer = data.isMultiplayer;
     this.selectedSkills = [];
     
-    this.coinGame = 15;
+    this.coinGame = 0;
     this.statueProgress = 0;
     this.totalStatue = 0;
 
@@ -54,9 +54,9 @@ export default class gameScene extends Phaser.Scene {
 
     // MAP
     if (this.isMultiplayer) {
-      this.load.tilemapTiledJSON("map", "assets/maps/newMap_debug.tmj");
+      this.load.tilemapTiledJSON("map", "assets/maps/newMap.tmj");
     } else {
-      this.load.tilemapTiledJSON("map", "assets/maps/newMap_singlePlayer_debug.tmj");
+      this.load.tilemapTiledJSON("map", "assets/maps/newMap_singlePlayer.tmj");
     }
 
     // BACKGROUND MAP

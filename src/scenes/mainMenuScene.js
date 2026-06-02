@@ -536,7 +536,7 @@ export default class mainMenuScene extends Phaser.Scene {
           "Temukan End Portal dan tekan Masuk untuk melanjutkan ke area berikutnya!",
           "Di Shop, kamu bisa membeli skill menggunakan koin. Pilih skill yang tepat untuk mengalahkan musuh!",
           "Pertarungan dimulai! Jawab pertanyaan dengan benar sebelum Timer habis untuk menyerang musuh!",
-          "Jika kamu salah dalam menjawab pertanyaan selama pertarungan, karaktermu akan dapat efek Staggered yang membuat kamu tidak bisa menjawab soal selama 6 detik. Tetap semangat dan jawab soal berikutnya!",
+          "Jika kamu salah dalam menjawab pertanyaan selama pertarungan, karaktermu akan dapat efek Staggered yang membuat kamu tidak bisa menjawab soal selama 4 detik. Tetap semangat dan jawab soal berikutnya!",
           "Jawab 3 soal berturut-turut dengan benar untuk memicu Combo! Saat Combo 3x tercapai, tombol Ultimate aktif. Ingat! tombol ultimate hanya bisa digunakan sekali dalam satu pertarungan, jadi gunakan dengan bijak!",
           "Kalahkan semua musuh untuk menang! Raih bintang sebanyak-banyaknya dan tingkatkan skormu!",
         ];
